@@ -88,8 +88,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <a href="https://javabetter.cn/sidebar/sanfene/fenbushi.html#_2-%E4%B8%BA%E4%BB%80%E4%B9%88-cap-%E4%B8%8D%E5%8F%AF%E5%85%BC%E5%BE%97%E5%91%A2" rel="nofollow">CAP不可兼得</a>：<br>
 分区容错性（P）必须要满足，在CA之间做取舍。</p>
 <ul>
-<li>从汇编代码的角度理解局部变量存储在程序的栈空间<br>
-rbp基址指针,rsp栈指针<br>
+<li>从汇编代码的角度理解局部变量存储在程序的栈空间</li>
+</ul>
+<p>rbp基址指针,rsp栈指针<br>
 函数被调用时：<br>
 保存调用者的基址指针在函数的栈空间：<code class="notranslate">pushq %rbp</code><br>
 将基址指针更新为当前函数的位置，也就是当前的栈指针 <code class="notranslate">movq %rsp, rbp</code><br>
@@ -99,7 +100,8 @@ rbp基址指针,rsp栈指针<br>
 函数运算时将栈空间内的局部变量加载到寄存器完成运算，结果存储在寄存器，可能赋给某个在栈空间的局部变量。<br>
 函数返回时，清理栈帧，将基址指针恢复为调用者的基址指针，将返回结果存储在寄存器如eax<br>
 <code class="notranslate">popq	%rbp              # 恢复旧的基址指针</code><br>
-<code class="notranslate">ret   </code></li>
+<code class="notranslate">ret   </code></p>
+<ul>
 <li><a href="https://www.woshinlper.com/system-design/data-communication/RocketMQ/" rel="nofollow">消息队列</a></li>
 </ul>
 <p>解耦、异步、削峰</p></div>
