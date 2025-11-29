@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Sat, 29 Nov 2025 02:10:24 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>autodl跑rag代码经验</title><link>https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</link><description>### 问题背景
-在autodl上运行rag大作业代码
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Sat, 29 Nov 2025 07:30:41 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>autodl跑rag实验经验</title><link>https://wjdk.github.io/Andy/post/autodl-pao-rag-shi-yan-jing-yan.html</link><description>### 问题背景
+在autodl上运行并优化rag大作业代码
 ```
 class Generator:
     def __init__(self, model_name='Qwen/Qwen2-7B-Instruct'):
@@ -20,15 +20,15 @@ class Generator:
         #...
 ```
 
-### 经验总结 
+### 配环境经验总结 
 #### 模型下载
 - 直接运行代码下载容易断连下载失败，且默认下载到系统盘，空间可能不够
-```
+
 本地已有模型时的加载逻辑
 Transformers 库的from_pretrained()方法遵循 **“本地优先，远程兜底”** 的原则，具体规则：
 识别本地路径：
 如果model_name是本地目录（如./qwen2-7b-instruct），直接加载本地模型文件；
-如果model_name是 Hugging Face Hub 上的模型名（如Qwen/Qwen2-7B-Instruct），先检查本地缓存目录。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</guid><pubDate>Sat, 29 Nov 2025 02:09:18 +0000</pubDate></item><item><title>Java学习笔记</title><link>https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</link><description># Java学习笔记
+如果model_name是 Hugging Face Hub 上的模型名（如Qwen/Qwen2-7B-Instruct），先检查本地缓存目录。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/autodl-pao-rag-shi-yan-jing-yan.html</guid><pubDate>Sat, 29 Nov 2025 02:09:18 +0000</pubDate></item><item><title>Java学习笔记</title><link>https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</link><description># Java学习笔记
 ## 语法
 
 ### 基本语法
