@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Sat, 29 Nov 2025 02:09:46 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>autodl跑rag代码经验</title><link>https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</link><description>### 问题背景
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Sat, 29 Nov 2025 02:10:24 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>autodl跑rag代码经验</title><link>https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</link><description>### 问题背景
 在autodl上运行rag大作业代码
 ```
 class Generator:
@@ -28,7 +28,56 @@ class Generator:
 Transformers 库的from_pretrained()方法遵循 **“本地优先，远程兜底”** 的原则，具体规则：
 识别本地路径：
 如果model_name是本地目录（如./qwen2-7b-instruct），直接加载本地模型文件；
-如果model_name是 Hugging Face Hub 上的模型名（如Qwen/Qwen2-7B-Instruct），先检查本地缓存目录。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</guid><pubDate>Sat, 29 Nov 2025 02:09:18 +0000</pubDate></item><item><title>Java学习笔记</title><link>https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</link><guid isPermaLink="true">https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</guid><pubDate>Fri, 28 Nov 2025 08:58:46 +0000</pubDate></item><item><title>面试知识点随记</title><link>https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</link><description>#### 字节一面（广州Tiktok后端）
+如果model_name是 Hugging Face Hub 上的模型名（如Qwen/Qwen2-7B-Instruct），先检查本地缓存目录。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/autodl-pao-rag-dai-ma-jing-yan.html</guid><pubDate>Sat, 29 Nov 2025 02:09:18 +0000</pubDate></item><item><title>Java学习笔记</title><link>https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</link><description># Java学习笔记
+## 语法
+
+### 基本语法
+
+- 数据类型
+
+byte: -128~127
+布尔类型boolean
+数组类型int[]
+`int[] ns = new int[5];`
+`int[] ns = new int[] { 68, 79, 91, 85, 62 };`
+
+- var关键字
+
+类似C++的auto自动定义变量
+`var sb = new StringBuilder();`
+实际上会自动变成：
+`StringBuilder sb = new StringBuilder();`
+
+- 输出 
+  
+```
+double d = 3.1415926;
+System.out.printf('%.2f\n', d);
+```
+
+- 输入
+  
+```
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in); // 创建Scanner对象
+        System.out.print('Input your name: '); // 打印提示
+        String name = scanner.nextLine(); // 读取一行输入并获取字符串
+        System.out.print('Input your age: '); // 打印提示
+        int age = scanner.nextInt(); // 读取一行输入并获取整数
+        System.out.printf('Hi, %s, you are %d\n', name, age); // 格式化输出
+    }
+}
+```
+
+### 面向对象
+
+#### 继承
+  
+继承关键字：`extends `
+在Java中，没有明确写extends的类，编译器会自动加上`extends Object`。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</guid><pubDate>Fri, 28 Nov 2025 08:58:46 +0000</pubDate></item><item><title>面试知识点随记</title><link>https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</link><description>#### 字节一面（广州Tiktok后端）
 ##### CAP一致性原则
 
 一致性：强一致性/最终一致性。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</guid><pubDate>Wed, 26 Nov 2025 10:42:57 +0000</pubDate></item><item><title>记梦</title><link>https://wjdk.github.io/Andy/post/ji-meng.html</link><description>一：城堡与山路
