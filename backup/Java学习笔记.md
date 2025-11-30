@@ -169,6 +169,16 @@ class Outer {
 }
 ```
 Inner Class除了有一个this指向它自己，还隐含地持有一个Outer Class实例，可以用Outer.this访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例。
+
+#### Java的编译运行过程：
+
+class,classpath,模块等见[参考资料3.12-3.14](https://liaoxuefeng.com/books/java/oop/basic/classpath-jar/index.html)
+
+[JRE与JDK的区别](https://www.runoob.com/w3cnote/the-different-of-jre-and-jdk.html)
+
+### JVM
+
+
 ### 参考资料
 
 [廖雪峰的Java教程](https://liaoxuefeng.com/books/java/introduction/index.html)
