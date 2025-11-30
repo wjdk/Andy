@@ -15,7 +15,7 @@
 
 ### 基本语法
 
-- 数据类型
+####  数据类型
 
 byte: -128~127
 布尔类型boolean
@@ -23,21 +23,21 @@ byte: -128~127
 `int[] ns = new int[5];`
 `int[] ns = new int[] { 68, 79, 91, 85, 62 };`
 
-- var关键字
+#### var关键字
 
 类似C++的auto自动定义变量
 `var sb = new StringBuilder();`
 实际上会自动变成：
 `StringBuilder sb = new StringBuilder();`
 
-- 输出 
+#### 输出 
   
 ```
 double d = 3.1415926;
 System.out.printf('%.2f\n', d);
 ```
 
-- 输入
+#### 输入
   
 ```
 import java.util.Scanner;
@@ -54,19 +54,17 @@ public class Main {
 }
 ```
 
-### 面向对象
-
-#### 继承
-  
-继承关键字：`extends `
-在Java中，没有明确写extends的类，编译器会自动加上`extends Object`。">
+#### 类型
+ 
+基本类型：byte，short，int，long，boolean，float，double，char；
+引用类型：所有class和interface类型。">
 <meta property="og:title" content="Java学习笔记">
 <meta property="og:description" content="# Java学习笔记
 ## 语法
 
 ### 基本语法
 
-- 数据类型
+####  数据类型
 
 byte: -128~127
 布尔类型boolean
@@ -74,21 +72,21 @@ byte: -128~127
 `int[] ns = new int[5];`
 `int[] ns = new int[] { 68, 79, 91, 85, 62 };`
 
-- var关键字
+#### var关键字
 
 类似C++的auto自动定义变量
 `var sb = new StringBuilder();`
 实际上会自动变成：
 `StringBuilder sb = new StringBuilder();`
 
-- 输出 
+#### 输出 
   
 ```
 double d = 3.1415926;
 System.out.printf('%.2f\n', d);
 ```
 
-- 输入
+#### 输入
   
 ```
 import java.util.Scanner;
@@ -105,12 +103,10 @@ public class Main {
 }
 ```
 
-### 面向对象
-
-#### 继承
-  
-继承关键字：`extends `
-在Java中，没有明确写extends的类，编译器会自动加上`extends Object`。">
+#### 类型
+ 
+基本类型：byte，short，int，long，boolean，float，double，char；
+引用类型：所有class和interface类型。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html">
 <meta property="og:image" content="https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg">
@@ -184,30 +180,22 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <div class="markdown-body" id="postBody"><h1>Java学习笔记</h1>
 <h2>语法</h2>
 <h3>基本语法</h3>
-<ul>
-<li>数据类型</li>
-</ul>
+<h4>数据类型</h4>
 <p>byte: -128~127<br>
 布尔类型boolean<br>
 数组类型int[]<br>
 <code class="notranslate">int[] ns = new int[5];</code><br>
 <code class="notranslate">int[] ns = new int[] { 68, 79, 91, 85, 62 };</code></p>
-<ul>
-<li>var关键字</li>
-</ul>
+<h4>var关键字</h4>
 <p>类似C++的auto自动定义变量<br>
 <code class="notranslate">var sb = new StringBuilder();</code><br>
 实际上会自动变成：<br>
 <code class="notranslate">StringBuilder sb = new StringBuilder();</code></p>
-<ul>
-<li>输出</li>
-</ul>
+<h4>输出</h4>
 <pre class="notranslate"><code class="notranslate">double d = 3.1415926;
 System.out.printf("%.2f\n", d);
 </code></pre>
-<ul>
-<li>输入</li>
-</ul>
+<h4>输入</h4>
 <pre class="notranslate"><code class="notranslate">import java.util.Scanner;
 
 public class Main {
@@ -221,6 +209,10 @@ public class Main {
     }
 }
 </code></pre>
+<h4>类型</h4>
+<p>基本类型：byte，short，int，long，boolean，float，double，char；<br>
+引用类型：所有class和interface类型。<br>
+引用类型判等要用<code class="notranslate">.equals()</code>，<code class="notranslate">=</code>相当于检查是否指向同一个对象。</p>
 <h3>面向对象</h3>
 <h4>继承</h4>
 <p>继承关键字：<code class="notranslate">extends </code><br>
@@ -327,10 +319,28 @@ class Outer {
 }
 </code></pre>
 <p>Inner Class除了有一个this指向它自己，还隐含地持有一个Outer Class实例，可以用Outer.this访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例。</p>
-<h4>Java的编译运行过程：</h4>
+<h4>Java的编译运行过程(简单）：</h4>
 <p>class,classpath,模块等见<a href="https://liaoxuefeng.com/books/java/oop/basic/classpath-jar/index.html" rel="nofollow">参考资料3.12-3.14</a></p>
 <p><a href="https://www.runoob.com/w3cnote/the-different-of-jre-and-jdk.html" rel="nofollow">JRE与JDK的区别</a></p>
-<h3>JVM</h3>
+<h4>Java包装类型</h4>
+<p>包装类型是基本类型相对应的引用类型。如int对应的引用类型是java.lang.Integer，可直接使用。</p>
+<h4>Javabean</h4>
+<p>JavaBean是一种符合命名规范的class，它通过getter和setter来定义属性；</p>
+<p>我们通常把一组对应的读方法（getter）和写方法（setter）称为属性（property）；</p>
+<p>使用Introspector.getBeanInfo()可以获取属性列表。（先<code class="notranslate">import java.beans.*;</code>）</p>
+<h3>异常处理</h3>
+<p><code class="notranslate">public byte[] getBytes(String charsetName) throws UnsupportedEncodingException { ... } </code></p>
+<p>在方法定义的时候，使用throws Xxx表示该方法可能抛出的异常类型。调用方在调用的时候，必须强制捕获这些异常或者同样声明可能抛出异常，否则编译器会报错。</p>
+<ul>
+<li>待扩展</li>
+</ul>
+<h3>反射</h3>
+<p>JVM为每个加载的class及interface创建了对应的Class实例来保存class及interface的所有信息；<br>
+获取一个class对应的Class实例后，就可以获取该class的所有信息；<br>
+通过Class实例获取class信息的方法称为反射（Reflection）；<br>
+JVM总是动态加载class，可以在运行期根据条件来控制加载class。</p>
+<h3>注解</h3>
+<h2>JVM</h2>
 <h3>参考资料</h3>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>

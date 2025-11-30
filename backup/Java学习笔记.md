@@ -3,7 +3,7 @@
 
 ### 基本语法
 
-- 数据类型
+####  数据类型
 
 byte: -128~127
 布尔类型boolean
@@ -11,21 +11,21 @@ byte: -128~127
 `int[] ns = new int[5];`
 `int[] ns = new int[] { 68, 79, 91, 85, 62 };`
 
-- var关键字
+#### var关键字
 
 类似C++的auto自动定义变量
 `var sb = new StringBuilder();`
 实际上会自动变成：
 `StringBuilder sb = new StringBuilder();`
 
-- 输出 
+#### 输出 
   
 ```
 double d = 3.1415926;
 System.out.printf("%.2f\n", d);
 ```
 
-- 输入
+#### 输入
   
 ```
 import java.util.Scanner;
@@ -41,6 +41,13 @@ public class Main {
     }
 }
 ```
+
+#### 类型
+ 
+基本类型：byte，short，int，long，boolean，float，double，char；
+引用类型：所有class和interface类型。
+引用类型判等要用`.equals()`，`=`相当于检查是否指向同一个对象。
+
 
 ### 面向对象
 
@@ -170,14 +177,44 @@ class Outer {
 ```
 Inner Class除了有一个this指向它自己，还隐含地持有一个Outer Class实例，可以用Outer.this访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例。
 
-#### Java的编译运行过程：
+#### Java的编译运行过程(简单）：
 
 class,classpath,模块等见[参考资料3.12-3.14](https://liaoxuefeng.com/books/java/oop/basic/classpath-jar/index.html)
 
 [JRE与JDK的区别](https://www.runoob.com/w3cnote/the-different-of-jre-and-jdk.html)
 
-### JVM
+#### Java包装类型
 
+包装类型是基本类型相对应的引用类型。如int对应的引用类型是java.lang.Integer，可直接使用。
+
+#### Javabean
+
+JavaBean是一种符合命名规范的class，它通过getter和setter来定义属性；
+
+我们通常把一组对应的读方法（getter）和写方法（setter）称为属性（property）；
+
+使用Introspector.getBeanInfo()可以获取属性列表。（先`import java.beans.*;`）
+
+### 异常处理
+
+`public byte[] getBytes(String charsetName) throws UnsupportedEncodingException {
+    ...
+}
+`
+
+在方法定义的时候，使用throws Xxx表示该方法可能抛出的异常类型。调用方在调用的时候，必须强制捕获这些异常或者同样声明可能抛出异常，否则编译器会报错。
+
+- 待扩展
+### 反射
+
+JVM为每个加载的class及interface创建了对应的Class实例来保存class及interface的所有信息；
+获取一个class对应的Class实例后，就可以获取该class的所有信息；
+通过Class实例获取class信息的方法称为反射（Reflection）；
+JVM总是动态加载class，可以在运行期根据条件来控制加载class。
+
+### 注解
+
+## JVM
 
 ### 参考资料
 
