@@ -242,7 +242,7 @@ JVM为每个加载的class及interface创建了对应的Class实例来保存clas
 #### 创建线程
 
 Java用`Thread`对象表示一个线程，通过调用`start()`启动一个新线程；`start()`方法会在内部自动调用实例的`run()`方法。
-可以通过`Thread`派生类或者实现`Runnable`的类来创建线程（覆写类`run()`方法）。
+可以通过`Thread`派生类或者实现`Runnable`接口的类来创建线程（覆写类`run()`方法）。
 `Thread.sleep()`暂停线程，单位为ms；`Thread.setPriority(int n)`设置线程调度优先级。
 
 通过对另一个线程对象调用`join()方法`可以等待其执行结束,例如`t.join()`；
@@ -362,6 +362,17 @@ class Mthreads implements Runnable{
 
 我的理解：`synchronized(object)`修饰代码段相当于让代码段运行前得到`object`对应的锁，运行后释放锁。
 
+#### wait和notify
+
+`wait()`方法在当前获取的锁对象上调用，等待时释放锁，唤醒时**试图**重新获得锁。
+`notify()/notifyAll()`在锁对象上调用，唤醒一个/所有在该锁对象上等待的线程。
+
+#### 读写锁
+
+
+`ReadWriteLock`可以实现读写锁，允许多个线程同时读，但只要有一个线程在写，其他线程就必须等待。（悲观锁）
+
+`StampedLock`是一种乐观锁，读的过程中允许写锁写入，有小概率导致数据不一致时用悲观锁处理冲突。
 ### 参考资料
 
 [廖雪峰的Java教程](https://liaoxuefeng.com/books/java/introduction/index.html)

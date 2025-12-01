@@ -270,7 +270,7 @@ Java的接口特指interface的定义，表示一个接口类型和一组方法�
 <h3>多线程</h3>
 <h4>创建线程</h4>
 <p>Java用<code class="notranslate">Thread</code>对象表示一个线程，通过调用<code class="notranslate">start()</code>启动一个新线程；<code class="notranslate">start()</code>方法会在内部自动调用实例的<code class="notranslate">run()</code>方法。<br>
-可以通过<code class="notranslate">Thread</code>派生类或者实现<code class="notranslate">Runnable</code>的类来创建线程（覆写类<code class="notranslate">run()</code>方法）。<br>
+可以通过<code class="notranslate">Thread</code>派生类或者实现<code class="notranslate">Runnable</code>接口的类来创建线程（覆写类<code class="notranslate">run()</code>方法）。<br>
 <code class="notranslate">Thread.sleep()</code>暂停线程，单位为ms；<code class="notranslate">Thread.setPriority(int n)</code>设置线程调度优先级。</p>
 <p>通过对另一个线程对象调用<code class="notranslate">join()方法</code>可以等待其执行结束,例如<code class="notranslate">t.join()</code>；</p>
 <h4>中断线程</h4>
@@ -366,6 +366,12 @@ Java的接口特指interface的定义，表示一个接口类型和一组方法�
 </details>
 <p>这种情况下，mt1和mt3不能同时运行,mt2可以和mt1/mt3同时运行。</p>
 <p>我的理解：<code class="notranslate">synchronized(object)</code>修饰代码段相当于让代码段运行前得到<code class="notranslate">object</code>对应的锁，运行后释放锁。</p>
+<h4>wait和notify</h4>
+<p><code class="notranslate">wait()</code>方法在当前获取的锁对象上调用，等待时释放锁，唤醒时<strong>试图</strong>重新获得锁。<br>
+<code class="notranslate">notify()/notifyAll()</code>在锁对象上调用，唤醒一个/所有在该锁对象上等待的线程。</p>
+<h4>读写锁</h4>
+<p><code class="notranslate">ReadWriteLock</code>可以实现读写锁，允许多个线程同时读，但只要有一个线程在写，其他线程就必须等待。（悲观锁）</p>
+<p><code class="notranslate">StampedLock</code>是一种乐观锁，读的过程中允许写锁写入，有小概率导致数据不一致时用悲观锁处理冲突。</p>
 <h3>参考资料</h3>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p>
 <p><a href="https://www.runoob.com/java/java-tutorial.html" rel="nofollow">菜鸟教程</a></p></div>
