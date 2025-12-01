@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Sun, 30 Nov 2025 12:25:35 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>CSAPP学习笔记</title><link>https://wjdk.github.io/Andy/post/CSAPP-xue-xi-bi-ji.html</link><description>### 计算机系统漫游
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Andy's blog</title><link>https://wjdk.github.io/Andy</link><description>流年暗中偷换</description><copyright>Andy's blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg</url><title>avatar</title><link>https://wjdk.github.io/Andy</link></image><lastBuildDate>Mon, 01 Dec 2025 09:08:16 +0000</lastBuildDate><managingEditor>Andy's blog</managingEditor><ttl>60</ttl><webMaster>Andy's blog</webMaster><item><title>CSAPP学习笔记</title><link>https://wjdk.github.io/Andy/post/CSAPP-xue-xi-bi-ji.html</link><description>### 计算机系统漫游
 
 &lt;img width='1336' height='823' alt='Image' src='https://github.com/user-attachments/assets/96202fd8-a857-41d3-a3bb-49eb343fd7d8' /&gt;
 
@@ -33,53 +33,14 @@ Transformers 库的from_pretrained()方法遵循 **“本地优先，远程兜�
 识别本地路径：
 如果model_name是本地目录（如./qwen2-7b-instruct），直接加载本地模型文件；
 如果model_name是 Hugging Face Hub 上的模型名（如Qwen/Qwen2-7B-Instruct），先检查本地缓存目录。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/autodl-pao-rag-shi-yan-jing-yan.html</guid><pubDate>Sat, 29 Nov 2025 02:09:18 +0000</pubDate></item><item><title>Java学习笔记</title><link>https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</link><description># Java学习笔记
-## 语法
 
-### 基本语法
+## 常用命令
 
-####  数据类型
-
-byte: -128~127
-布尔类型boolean
-数组类型int[]
-`int[] ns = new int[5];`
-`int[] ns = new int[] { 68, 79, 91, 85, 62 };`
-
-#### var关键字
-
-类似C++的auto自动定义变量
-`var sb = new StringBuilder();`
-实际上会自动变成：
-`StringBuilder sb = new StringBuilder();`
-
-#### 输出 
+### 单文件编译运行
   
-```
-double d = 3.1415926;
-System.out.printf('%.2f\n', d);
-```
-
-#### 输入
-  
-```
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // 创建Scanner对象
-        System.out.print('Input your name: '); // 打印提示
-        String name = scanner.nextLine(); // 读取一行输入并获取字符串
-        System.out.print('Input your age: '); // 打印提示
-        int age = scanner.nextInt(); // 读取一行输入并获取整数
-        System.out.printf('Hi, %s, you are %d\n', name, age); // 格式化输出
-    }
-}
-```
-
-#### 类型
- 
-基本类型：byte，short，int，long，boolean，float，double，char；
-引用类型：所有class和interface类型。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</guid><pubDate>Fri, 28 Nov 2025 08:58:46 +0000</pubDate></item><item><title>面试知识点随记</title><link>https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</link><description>#### 字节一面（广州Tiktok后端）
+`java main.java`编译
+`javac main`运行类文件
+有包名编译运行时需加上包名，编译时使用`-encoding`可以设置编码，在`src`目录编译运行。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji.html</guid><pubDate>Fri, 28 Nov 2025 08:58:46 +0000</pubDate></item><item><title>面试知识点随记</title><link>https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</link><description>#### 字节一面（广州Tiktok后端）
 ##### CAP一致性原则
 
 一致性：强一致性/最终一致性。</description><guid isPermaLink="true">https://wjdk.github.io/Andy/post/mian-shi-zhi-shi-dian-sui-ji.html</guid><pubDate>Wed, 26 Nov 2025 10:42:57 +0000</pubDate></item><item><title>记梦</title><link>https://wjdk.github.io/Andy/post/ji-meng.html</link><description>一：城堡与山路
