@@ -109,38 +109,26 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 javac -encoding UTF-8 com\itranswarp\learnjava\Main.java &amp;&amp; java com.itranswarp.learnjava.Main
 </code></pre>
 <h3>在markdown中使用代码展开</h3>
-<pre class="notranslate"><code class="notranslate">&lt;details&gt;
-&lt;summary&gt;cookie设置&lt;/summary&gt;
-
-```Java
-
-</code></pre>
-
-<pre class="notranslate"><code class="notranslate">## 语法
-
-### 基本语法
-
-####  数据类型
-
-byte: -128~127
-布尔类型boolean
-数组类型int[]
-`int[] ns = new int[5];`
-`int[] ns = new int[] { 68, 79, 91, 85, 62 };`
-
-#### var关键字
-
-类似C++的auto自动定义变量
-`var sb = new StringBuilder();`
-实际上会自动变成：
-`StringBuilder sb = new StringBuilder();`
-
-#### 输出 
-  
-```java
-double d = 3.1415926;
-System.out.printf("%.2f\n", d);
-</code></pre>
+<details>
+<summary>代码展开</summary>
+<div class="highlight highlight-source-java"><pre class="notranslate">    <span class="pl-s1">这里填入代码</span></pre></div>
+</details>
+<h2>语法</h2>
+<h3>基本语法</h3>
+<h4>数据类型</h4>
+<p>byte: -128~127<br>
+布尔类型boolean<br>
+数组类型int[]<br>
+<code class="notranslate">int[] ns = new int[5];</code><br>
+<code class="notranslate">int[] ns = new int[] { 68, 79, 91, 85, 62 };</code></p>
+<h4>var关键字</h4>
+<p>类似C++的auto自动定义变量<br>
+<code class="notranslate">var sb = new StringBuilder();</code><br>
+实际上会自动变成：<br>
+<code class="notranslate">StringBuilder sb = new StringBuilder();</code></p>
+<h4>输出</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">double</span> <span class="pl-s1">d</span> = <span class="pl-c1">3.1415926</span>;
+<span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">printf</span>(<span class="pl-s">"%.2f<span class="pl-cce">\n</span>"</span>, <span class="pl-s1">d</span>);</pre></div>
 <h4>输入</h4>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">util</span>.<span class="pl-s1">Scanner</span>;
 

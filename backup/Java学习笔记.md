@@ -12,16 +12,15 @@ javac com\itranswarp\learnjava\Main.java && java com.itranswarp.learnjava.Main
 javac -encoding UTF-8 com\itranswarp\learnjava\Main.java && java com.itranswarp.learnjava.Main
 ```
 ### 在markdown中使用代码展开
-```
+
 <details>
-<summary>cookie设置</summary>
+<summary>代码展开</summary>
 
 ```Java
-
+    这里填入代码
 ```
 </details>
 
-```
 ## 语法
 
 ### 基本语法
