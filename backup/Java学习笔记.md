@@ -557,7 +557,8 @@ resources.addPreResources(
 
 通过`HttpServletResponse`设置`cookie`以后，浏览器会在有效期内访问生效路径时带上`cookie`。
 浏览器请求的RequestHeaders的Cookie部分如下：
-![alt text](image.png)
+<img width="620" height="124" alt="Image" src="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1" />
+
 
 <details>
 <summary>cookie设置</summary>
