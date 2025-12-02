@@ -596,7 +596,7 @@ Servelet容器在第一次调用`getSession()`时会创建`Session`；
 Servlet容器会自动创建`JSESSIONID`送给浏览器，浏览器请求时会带上`JSESSIONID`;
 
 <details>
-<summary>req.getSession()源码（具体实现在request..class)</summary>
+<summary>req.getSession()源码（具体实现在request.class)</summary>
 
 ```Java
 public class Request implements HttpServletRequest {

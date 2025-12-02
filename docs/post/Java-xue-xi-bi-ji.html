@@ -537,7 +537,7 @@ Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 Servelet容器在第一次调用<code class="notranslate">getSession()</code>时会创建<code class="notranslate">Session</code>；<br>
 Servlet容器会自动创建<code class="notranslate">JSESSIONID</code>送给浏览器，浏览器请求时会带上<code class="notranslate">JSESSIONID</code>;</p>
 <details>
-<summary>req.getSession()源码（具体实现在request..class)</summary>
+<summary>req.getSession()源码（具体实现在request.class)</summary>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Request</span> <span class="pl-k">implements</span> <span class="pl-smi">HttpServletRequest</span> {
     ...
     <span class="pl-k">public</span> <span class="pl-smi">HttpSession</span> <span class="pl-en">getSession</span>(<span class="pl-smi">boolean</span> <span class="pl-s1">create</span>) {
