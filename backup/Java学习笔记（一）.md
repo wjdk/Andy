@@ -21,8 +21,6 @@ javac -encoding UTF-8 com\itranswarp\learnjava\Main.java && java com.itranswarp.
 ```
 </details>
 
-## 语法
-
 ### 基本语法
 
 ####  数据类型
