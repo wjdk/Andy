@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# Java学习笔记
+
+## 常用命令
+
+### 单文件编译运行
+  
+`java main.java`编译
+`javac main`运行类文件
+有包名编译运行时需加上包名，编译时使用`-encoding`可以设置编码，在`src`目录编译运行。">
+<meta property="og:title" content="Java学习笔记（一）">
+<meta property="og:description" content="# Java学习笔记
+
+## 常用命令
+
+### 单文件编译运行
+  
+`java main.java`编译
+`javac main`运行类文件
+有包名编译运行时需加上包名，编译时使用`-encoding`可以设置编码，在`src`目录编译运行。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji-%EF%BC%88-yi-%EF%BC%89.html">
+<meta property="og:image" content="https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg">
+<title>Java学习笔记（一）</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Java学习笔记（一）</h1>
+<div class="title-right">
+    <a href="https://wjdk.github.io/Andy" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/wjdk/Andy/issues/6" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>Java学习笔记</h1>
+<h2>常用命令</h2>
+<h3>单文件编译运行</h3>
+<p><code class="notranslate">java main.java</code>编译<br>
+<code class="notranslate">javac main</code>运行类文件<br>
+有包名编译运行时需加上包名，编译时使用<code class="notranslate">-encoding</code>可以设置编码，在<code class="notranslate">src</code>目录编译运行。</p>
+<pre class="notranslate"><code class="notranslate">javac com\itranswarp\learnjava\Main.java &amp;&amp; java com.itranswarp.learnjava.Main
+javac -encoding UTF-8 com\itranswarp\learnjava\Main.java &amp;&amp; java com.itranswarp.learnjava.Main
+</code></pre>
+<h3>在markdown中使用代码展开</h3>
+<details>
+<summary>代码展开</summary>
+<div class="highlight highlight-source-java"><pre class="notranslate">    <span class="pl-s1">这里填入代码</span></pre></div>
+</details>
+<h2>语法</h2>
+<h3>基本语法</h3>
+<h4>数据类型</h4>
+<p>byte: -128~127<br>
+布尔类型boolean<br>
+数组类型int[]<br>
+<code class="notranslate">int[] ns = new int[5];</code><br>
+<code class="notranslate">int[] ns = new int[] { 68, 79, 91, 85, 62 };</code></p>
+<h4>var关键字</h4>
+<p>类似C++的auto自动定义变量<br>
+<code class="notranslate">var sb = new StringBuilder();</code><br>
+实际上会自动变成：<br>
+<code class="notranslate">StringBuilder sb = new StringBuilder();</code></p>
+<h4>输出</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">double</span> <span class="pl-s1">d</span> = <span class="pl-c1">3.1415926</span>;
+<span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">printf</span>(<span class="pl-s">"%.2f<span class="pl-cce">\n</span>"</span>, <span class="pl-s1">d</span>);</pre></div>
+<h4>输入</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">util</span>.<span class="pl-s1">Scanner</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Scanner</span> <span class="pl-s1">scanner</span> = <span class="pl-k">new</span> <span class="pl-smi">Scanner</span>(<span class="pl-smi">System</span>.<span class="pl-s1">in</span>); <span class="pl-c">// 创建Scanner对象</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">print</span>(<span class="pl-s">"Input your name: "</span>); <span class="pl-c">// 打印提示</span>
+        <span class="pl-smi">String</span> <span class="pl-s1">name</span> = <span class="pl-s1">scanner</span>.<span class="pl-en">nextLine</span>(); <span class="pl-c">// 读取一行输入并获取字符串</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">print</span>(<span class="pl-s">"Input your age: "</span>); <span class="pl-c">// 打印提示</span>
+        <span class="pl-smi">int</span> <span class="pl-s1">age</span> = <span class="pl-s1">scanner</span>.<span class="pl-en">nextInt</span>(); <span class="pl-c">// 读取一行输入并获取整数</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">printf</span>(<span class="pl-s">"Hi, %s, you are %d<span class="pl-cce">\n</span>"</span>, <span class="pl-s1">name</span>, <span class="pl-s1">age</span>); <span class="pl-c">// 格式化输出</span>
+    }
+}</pre></div>
+<h4>类型</h4>
+<p>基本类型：byte，short，int，long，boolean，float，double，char；<br>
+引用类型：所有class和interface类型。<br>
+引用类型判等要用<code class="notranslate">.equals()</code>，<code class="notranslate">=</code>相当于检查是否指向同一个对象。</p>
+<h3>面向对象</h3>
+<h4>继承</h4>
+<p>继承关键字：<code class="notranslate">extends </code><br>
+在Java中，没有明确写extends的类，编译器会自动加上<code class="notranslate">extends Object</code>。<br>
+Java只允许一个class继承自一个类。<br>
+<code class="notranslate">super</code>关键字表示父类（超类）。子类引用父类的字段时，可以用<code class="notranslate">super.fieldName</code><br>
+子类构造函数调用父类的构造函数：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Student</span> <span class="pl-k">extends</span> <span class="pl-smi">Person</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">int</span> <span class="pl-s1">score</span>;
+
+    <span class="pl-k">public</span> <span class="pl-smi">Student</span>(<span class="pl-smi">String</span> <span class="pl-s1">name</span>, <span class="pl-smi">int</span> <span class="pl-s1">age</span>, <span class="pl-smi">int</span> <span class="pl-s1">score</span>) {
+        <span class="pl-en">super</span>(<span class="pl-s1">name</span>, <span class="pl-s1">age</span>); <span class="pl-c">// 调用父类的构造方法Person(String, int)</span>
+        <span class="pl-smi">this</span>.<span class="pl-s1">score</span> = <span class="pl-s1">score</span>;
+    }
+}</pre></div>
+<p>向上转型：把一个子类型安全地变为更加抽象的父类型：<br>
+<code class="notranslate">Person p = new Student();</code></p>
+<h4>override（C++的重载）</h4>
+<p>在继承关系中，子类如果定义了一个与父类方法签名完全相同的方法，被称为覆写（Override）。<br>
+加上<code class="notranslate">@Override</code>可以让编译器帮助检查是否进行了正确的覆写。希望进行覆写，但是不小心写错了方法签名，编译器会报错。</p>
+<h4>abstract</h4>
+<p>通过abstract定义的方法是抽象方法，它只有定义，没有实现。抽象方法定义了子类必须实现的接口规范；</p>
+<p>定义了抽象方法的class必须被定义为抽象类，从抽象类继承的子类必须实现抽象方法.</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">abstract</span> <span class="pl-k">class</span> <span class="pl-smi">Person</span> {
+    <span class="pl-k">public</span> <span class="pl-k">abstract</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>();
+}</pre></div>
+<h4>interface（接口）</h4>
+<p>如果一个抽象类没有字段，所有方法全部都是抽象方法：<br>
+就可以把该抽象类改写为接口：<code class="notranslate">interface</code><br>
+Java的接口特指interface的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。<br>
+一个类可以实现多个<code class="notranslate">interface</code></p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Student</span> <span class="pl-k">implements</span> <span class="pl-smi">Person</span>, <span class="pl-smi">Hello</span> { <span class="pl-c">// 实现了两个interface</span>
+    ...
+}</pre></div>
+<h4>包作用域</h4>
+<p>package<br>
+包作用域是指一个类允许访问同一个package的没有public、private修饰的class，以及没有public、protected、private修饰的字段和方法。</p>
+<h4>final</h4>
+<p>用final修饰class可以阻止被继承：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
+
+<span class="pl-c">// 无法被继承:</span>
+<span class="pl-k">public</span> <span class="pl-k">final</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-c1">0</span>;
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>(<span class="pl-smi">int</span> <span class="pl-s1">t</span>) {
+        <span class="pl-smi">long</span> <span class="pl-s1">i</span> = <span class="pl-s1">t</span>;
+    }
+}</pre></div>
+<p>用final修饰method可以阻止被子类覆写：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-c">// 无法被覆写:</span>
+    <span class="pl-k">protected</span> <span class="pl-k">final</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>() {
+    }
+}</pre></div>
+<p>用final修饰field可以阻止被重新赋值：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-c1">0</span>;
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>() {
+        <span class="pl-smi">this</span>.<span class="pl-s1">n</span> = <span class="pl-c1">1</span>; <span class="pl-c">// error!</span>
+    }
+}</pre></div>
+<p>用final修饰局部变量可以阻止被重新赋值：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>(<span class="pl-k">final</span> <span class="pl-smi">int</span> <span class="pl-s1">t</span>) {
+        <span class="pl-s1">t</span> = <span class="pl-c1">1</span>; <span class="pl-c">// error!</span>
+    }
+}</pre></div>
+<h4>内部类inner Class</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c">// inner class</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Outer</span> <span class="pl-s1">outer</span> = <span class="pl-k">new</span> <span class="pl-smi">Outer</span>(<span class="pl-s">"Nested"</span>); <span class="pl-c">// 实例化一个Outer</span>
+        <span class="pl-smi">Outer</span>.<span class="pl-smi">Inner</span> <span class="pl-s1">inner</span> = <span class="pl-s1">outer</span>.<span class="pl-k">new</span> <span class="pl-smi">Inner</span>(); <span class="pl-c">// 实例化一个Inner</span>
+        <span class="pl-s1">inner</span>.<span class="pl-en">hello</span>();
+    }
+}
+
+<span class="pl-k">class</span> <span class="pl-smi">Outer</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">name</span>;
+
+    <span class="pl-smi">Outer</span>(<span class="pl-smi">String</span> <span class="pl-s1">name</span>) {
+        <span class="pl-smi">this</span>.<span class="pl-s1">name</span> = <span class="pl-s1">name</span>;
+    }
+
+    <span class="pl-k">class</span> <span class="pl-smi">Inner</span> {
+        <span class="pl-smi">void</span> <span class="pl-en">hello</span>() {
+            <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Hello, "</span> + <span class="pl-smi">Outer</span>.<span class="pl-smi">this</span>.<span class="pl-s1">name</span>);
+        }
+    }
+}</pre></div>
+<p>Inner Class除了有一个this指向它自己，还隐含地持有一个Outer Class实例，可以用Outer.this访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例。</p>
+<h4>Java的编译运行过程(简单）：</h4>
+<p>class,classpath,模块等见<a href="https://liaoxuefeng.com/books/java/oop/basic/classpath-jar/index.html" rel="nofollow">参考资料3.12-3.14</a></p>
+<p><a href="https://www.runoob.com/w3cnote/the-different-of-jre-and-jdk.html" rel="nofollow">JRE与JDK的区别</a></p>
+<h4>Java包装类型</h4>
+<p>包装类型是基本类型相对应的引用类型。如int对应的引用类型是java.lang.Integer，可直接使用。</p>
+<h4>Javabean</h4>
+<p>JavaBean是一种符合命名规范的class，它通过getter和setter来定义属性；</p>
+<p>我们通常把一组对应的读方法（getter）和写方法（setter）称为属性（property）；</p>
+<p>使用Introspector.getBeanInfo()可以获取属性列表。（先<code class="notranslate">import java.beans.*;</code>）</p>
+<h3>异常处理</h3>
+<p><code class="notranslate">public byte[] getBytes(String charsetName) throws UnsupportedEncodingException { ... } </code></p>
+<p>在方法定义的时候，使用throws Xxx表示该方法可能抛出的异常类型。调用方在调用的时候，必须强制捕获这些异常或者同样声明可能抛出异常，否则编译器会报错。</p>
+<ul>
+<li>待扩展</li>
+</ul>
+<h3>反射</h3>
+<p>JVM为每个加载的class及interface创建了对应的Class实例来保存class及interface的所有信息；获取一个class对应的Class实例后，就可以获取该class的所有信息；通过Class实例获取class信息的方法称为反射（Reflection）。</p>
+<p>可以通过反射获取<strong>类</strong>的字段(Field)、方法(Method)、构造方法和继承关系，可通过传入类的具体实例得到对应的具体信息。</p>
+<p>反射是为了解决在运行期，对某个实例一无所知的情况下，如何调用其方法。</p>
+<h4>动态代理</h4>
+<p>...</p>
+<h3>注解</h3>
+<h4>编译检查</h4>
+<p><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/OverRide/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/OverRide">@OverRide</a> - 检查该方法是否是重写方法。如果发现其父类，或者是引用的接口中并没有该方法时，会报编译错误。<br>
+<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/deprecated/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/deprecated">@deprecated</a> - 标记过时方法。如果使用该方法，会报编译警告。<br>
+<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/SuppressWarnings/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/SuppressWarnings">@SuppressWarnings</a> - 指示编译器去忽略注解中声明的警告。</p>
+<h4>通过反射获取自定义注解</h4>
+<p>...</p>
+<h3>多线程</h3>
+<h4>创建线程</h4>
+<p>Java用<code class="notranslate">Thread</code>对象表示一个线程，通过调用<code class="notranslate">start()</code>启动一个新线程；<code class="notranslate">start()</code>方法会在内部自动调用实例的<code class="notranslate">run()</code>方法。<br>
+可以通过<code class="notranslate">Thread</code>派生类或者实现<code class="notranslate">Runnable</code>接口的类来创建线程（覆写类<code class="notranslate">run()</code>方法）。<br>
+<code class="notranslate">Thread.sleep()</code>暂停线程，单位为ms；<code class="notranslate">Thread.setPriority(int n)</code>设置线程调度优先级。</p>
+<p>通过对另一个线程对象调用<code class="notranslate">join()方法</code>可以等待其执行结束,例如<code class="notranslate">t.join()</code>；</p>
+<h4>中断线程</h4>
+<p>对目标线程调用<code class="notranslate">interrupt()</code>方法可以请求中断一个线程，目标线程通过检测<code class="notranslate">isInterrupted()</code>标志获取自身是否已中断。如果目标线程处于等待状态，该线程会捕获到<code class="notranslate">InterruptedException</code>。</p>
+<p>线程间共享变量需要使用<code class="notranslate">volatile</code>关键字标记，确保每个线程都能读取到更新后的变量值。(<code class="notranslate">volatile</code>解决的是可见性问题)</p>
+<p><code class="notranslate">volatile</code>关键字的目的是告诉虚拟机：</p>
+<p>每次访问变量时，总是获取主内存的最新值；<br>
+每次修改变量后，立刻回写到主内存。</p>
+<h4>守护线程</h4>
+<p>守护线程是指为其他线程服务的线程。在JVM中，所有非守护线程都执行完毕后，无论有没有守护线程，虚拟机都会自动退出。<br>
+在调用<code class="notranslate">start()</code>方法前，调用<code class="notranslate">setDaemon(true)</code>把该线程标记为守护线程。<br>
+守护线程不能持有需要关闭的资源（如打开文件等）。</p>
+<h4>线程同步</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">synchronized</span> <span class="pl-smi">void</span> <span class="pl-en">add</span>(<span class="pl-smi">int</span> <span class="pl-s1">n</span>) { <span class="pl-c">// 锁住this</span>
+    <span class="pl-s1">count</span> += <span class="pl-s1">n</span>;
+} <span class="pl-c">// 解锁</span></pre></div>
+<p>等价于</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">add</span>(<span class="pl-smi">int</span> <span class="pl-s1">n</span>) {
+    <span class="pl-k">synchronized</span>(<span class="pl-smi">this</span>) { <span class="pl-c">// 锁住this</span>
+        <span class="pl-s1">count</span> += <span class="pl-s1">n</span>;
+    } <span class="pl-c">// 解锁</span>
+}</pre></div>
+<p><code class="notranslate">synchronized(this)</code>锁住的是对象，同一个对象里只有一个线程能执行<code class="notranslate">synchronized</code>修饰的代码段，其他线程可以执行非<code class="notranslate">synchronized</code>修饰的代码段。</p>
+<details>
+<summary>代码展开</summary>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span>{
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"使用关键字synchronized"</span>);
+        <span class="pl-smi">Mthreads</span> <span class="pl-s1">mt</span>=<span class="pl-k">new</span> <span class="pl-smi">Mthreads</span>();
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread1</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt1"</span>);
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread2</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt2"</span>);
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread3</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt3"</span>);
+        <span class="pl-s1">thread1</span>.<span class="pl-en">start</span>();
+        <span class="pl-s1">thread2</span>.<span class="pl-en">start</span>();
+        <span class="pl-s1">thread3</span>.<span class="pl-en">start</span>();
+    }
+}
+<span class="pl-k">class</span> <span class="pl-smi">Mthreads</span> <span class="pl-k">implements</span> <span class="pl-smi">Runnable</span>{
+    <span class="pl-k">private</span> <span class="pl-smi">int</span> <span class="pl-s1">count</span>;
+
+    <span class="pl-k">public</span> <span class="pl-smi">Mthreads</span>() {
+        <span class="pl-s1">count</span> = <span class="pl-c1">0</span>;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">countAdd</span>() {
+        <span class="pl-k">synchronized</span>(<span class="pl-smi">this</span>) {
+            <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+                <span class="pl-k">try</span> {
+                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">":"</span> + (<span class="pl-s1">count</span>++));
+                    <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+                } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                    <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+                }
+            }
+        }
+    }
+
+    <span class="pl-c">//非synchronized代码块，未对count进行读写操作，所以可以不用synchronized</span>
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">printCount</span>() {
+        <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+            <span class="pl-k">try</span> {
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">" count:"</span> + <span class="pl-s1">count</span>);
+                <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+            } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+            }
+        }
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">synchronized</span> <span class="pl-smi">void</span> <span class="pl-en">printCount2</span>() {
+        <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+            <span class="pl-k">try</span> {
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">" count:"</span> + <span class="pl-s1">count</span>);
+                <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+            } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+            }
+        }
+    }
+
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>() {
+        <span class="pl-smi">String</span> <span class="pl-s1">threadName</span> = <span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>();
+        <span class="pl-k">if</span> (<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt1"</span>)) {
+            <span class="pl-en">countAdd</span>();
+        } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt2"</span>)) {
+            <span class="pl-en">printCount</span>();
+        }    
+        <span class="pl-k">else</span> <span class="pl-k">if</span>(<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt3"</span>)){
+            <span class="pl-en">printCount2</span>();
+        }
+    }
+}</pre></div>
+</details>
+<p>这种情况下，mt1和mt3不能同时运行,mt2可以和mt1/mt3同时运行。</p>
+<p>我的理解：<code class="notranslate">synchronized(object)</code>修饰代码段相当于让代码段运行前得到<code class="notranslate">object</code>对应的锁，运行后释放锁。</p>
+<h4>wait和notify</h4>
+<p><code class="notranslate">wait()</code>方法在当前获取的锁对象上调用，等待时释放锁，唤醒时<strong>试图</strong>重新获得锁。<br>
+<code class="notranslate">notify()/notifyAll()</code>在锁对象上调用，唤醒一个/所有在该锁对象上等待的线程。</p>
+<h4>读写锁</h4>
+<p><code class="notranslate">ReadWriteLock</code>可以实现读写锁，允许多个线程同时读，但只要有一个线程在写，其他线程就必须等待。（悲观锁）</p>
+<p><code class="notranslate">StampedLock</code>是一种乐观锁，读的过程中允许写锁写入，有小概率导致数据不一致时用悲观锁处理冲突。</p>
+<h4>Semaphore</h4>
+<p><code class="notranslate">Semaphore</code>是信号量，用于限制资源被最多N个线程访问。<br>
+<code class="notranslate">semaphore.acquire();</code>获取，<code class="notranslate">semaphore.release();</code>释放。</p>
+<h4>线程池</h4>
+<p><code class="notranslate">ExecutorService</code>接口表示线程池</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c">// 创建固定大小的线程池:</span>
+<span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">3</span>);
+<span class="pl-c">// 提交任务:</span>
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task1</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task2</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task3</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task4</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task5</span>);</pre></div>
+<p>FixedThreadPool：线程数固定的线程池；<br>
+CachedThreadPool：线程数根据任务动态调整的线程池；<br>
+SingleThreadExecutor：仅单线程执行的线程池。<br>
+放入ScheduledThreadPool的任务可以定期反复执行。</p>
+<p><a href="https://blog.csdn.net/ARPOSPF/article/details/120276045" rel="nofollow">Java面试：为什么不建议使用Executors创建线程池？</a></p>
+<h4>Future</h4>
+<p><code class="notranslate">Callable</code>接口，和<code class="notranslate">Runnable</code>接口比，它多了一个返回值。</p>
+<p>可以用<code class="notranslate">Future</code>获取<code class="notranslate">Callable</code>任务异步执行的结果，获取会在执行完成前阻塞。</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">4</span>); 
+<span class="pl-c">// 定义任务:</span>
+<span class="pl-smi">Callable</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">task</span> = <span class="pl-k">new</span> <span class="pl-smi">Task</span>();
+<span class="pl-c">// 提交任务并获得Future:</span>
+<span class="pl-smi">Future</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">future</span> = <span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task</span>);
+<span class="pl-c">// 从Future获取异步执行返回的结果:</span>
+<span class="pl-smi">String</span> <span class="pl-s1">result</span> = <span class="pl-s1">future</span>.<span class="pl-en">get</span>(); <span class="pl-c">// 可能阻塞</span></pre></div>
+<p>使用<code class="notranslate">CompletableFuture</code>可以实现回调、线程的串行化、并行化。</p>
+<h4>ThreadLocal</h4>
+<p>使用ThreadLocal来设置单个线程独有的上下文（“局部变量”）。</p>
+<p>ThreadLocal实例通常总是以静态字段初始化如下：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">static</span> <span class="pl-smi">ThreadLocal</span>&lt;<span class="pl-smi">User</span>&gt; <span class="pl-s1">threadLocalUser</span> = <span class="pl-k">new</span> <span class="pl-smi">ThreadLocal</span>&lt;&gt;();</pre></div>
+<p>典型使用如下:</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">void</span> <span class="pl-en">processUser</span>(<span class="pl-smi">user</span>) {
+    <span class="pl-k">try</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">set</span>(<span class="pl-s1">user</span>);
+        <span class="pl-en">step1</span>();
+        <span class="pl-en">step2</span>();
+        <span class="pl-en">log</span>();
+    } <span class="pl-k">finally</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">remove</span>();
+    }
+}
+...
+        <span class="pl-smi">User</span> <span class="pl-s1">u</span> = <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">get</span>();
+...</pre></div>
+<p><code class="notranslate">ThreadLocal</code>本身不会存储任何数据，<code class="notranslate">ThreadLocal</code>的<code class="notranslate">set</code>方法是将值存储到<code class="notranslate">Thread</code>线程本身的<code class="notranslate">ThreadLocalMap</code>里面了。<br>
+真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用<code class="notranslate">ThreadLocoal</code>的<code class="notranslate">remove</code>方法。</p>
+<p><a href="https://github.com/wupeixuan/JDKSourceCode1.8/blob/master/src/java/lang/ThreadLocal.java">threadlocal源码解读</a></p>
+<h4>虚拟线程</h4>
+<p>Java 19引入的虚拟线程是为了解决IO密集型任务的吞吐量，它可以高效通过少数线程去调度大量虚拟线程；<br>
+虚拟线程在执行到IO操作或Blocking操作时，会自动切换到其他虚拟线程执行，从而避免当前线程等待，能最大化线程的执行效率。<br>
+...</p>
+<h3>函数式编程</h3>
+<h4>FunctionalInterface</h4>
+<p>单抽象方法接口被称为<code class="notranslate">FunctionalInterface</code>,可用<code class="notranslate">@FunctionalInterface</code>来进行编译检查。<br>
+接收<code class="notranslate">FunctionalInterface</code>作为参数的时候，可以把实例化的匿名类改写为Lambda表达式；Lambda表达式的参数和返回值类型均可由编译器自动推断。<br>
+<code class="notranslate">FunctionalInterface</code>还可以传入：<br>
+符合方法签名的静态方法；<br>
+符合方法签名的实例方法（实例类型被看做第一个参数类型）；<br>
+符合方法签名的构造方法（实例类型被看做返回类型）。<br>
+注：上述方法传入时用使用方法引用。</p>
+<h4>方法引用</h4>
+<p>例：<code class="notranslate">Main</code>类中静态方法cmp的引用，用<code class="notranslate">Main::cmp</code>表示</p>
+<blockquote>
+<p>You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method. In those cases, it’s often clearer to refer to the existing method by name. Method references enable you to do this; they are compact, easy-to-read lambda expressions for methods that already have a name.</p>
+</blockquote>
+<h4>Stream</h4>
+<p>...</p>
+<h3>网络编程</h3>
+<p>TCP/UDP/SMTP/http/RMI...<br>
+复习网络知识时可扩展...</p>
+<h3>参考资料</h3>
+<p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p>
+<p><a href="https://www.runoob.com/java/java-tutorial.html" rel="nofollow">菜鸟教程</a></p></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://wjdk.github.io/Andy">Andy's blog</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if(""!=""){
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","wjdk/Andy");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+
+
+</html>
