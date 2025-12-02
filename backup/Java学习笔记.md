@@ -445,6 +445,14 @@ void processUser(user) {
 `ThreadLocal`本身不会存储任何数据，`ThreadLocal`的`set`方法是将值存储到`Thread`线程本身的`ThreadLocalMap`里面了。
 真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用`ThreadLocoal`的`remove`方法。
 
+[threadlocal源码解读](https://github.com/wupeixuan/JDKSourceCode1.8/blob/master/src/java/lang/ThreadLocal.java)
+
+#### 虚拟线程
+
+Java 19引入的虚拟线程是为了解决IO密集型任务的吞吐量，它可以高效通过少数线程去调度大量虚拟线程；
+虚拟线程在执行到IO操作或Blocking操作时，会自动切换到其他虚拟线程执行，从而避免当前线程等待，能最大化线程的执行效率。
+...
+
 ### 函数式编程
 
 #### FunctionalInterface
@@ -466,6 +474,12 @@ void processUser(user) {
 #### Stream
 
 ...
+### 网络编程
+TCP/UDP/SMTP/Http/RMI...
+复习网络知识时可扩展...
+
+### web开发
+
 
 ### 参考资料
 

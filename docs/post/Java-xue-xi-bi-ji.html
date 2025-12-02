@@ -420,6 +420,11 @@ SingleThreadExecutor：仅单线程执行的线程池。<br>
 ...</pre></div>
 <p><code class="notranslate">ThreadLocal</code>本身不会存储任何数据，<code class="notranslate">ThreadLocal</code>的<code class="notranslate">set</code>方法是将值存储到<code class="notranslate">Thread</code>线程本身的<code class="notranslate">ThreadLocalMap</code>里面了。<br>
 真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用<code class="notranslate">ThreadLocoal</code>的<code class="notranslate">remove</code>方法。</p>
+<p><a href="https://github.com/wupeixuan/JDKSourceCode1.8/blob/master/src/java/lang/ThreadLocal.java">threadlocal源码解读</a></p>
+<h4>虚拟线程</h4>
+<p>Java 19引入的虚拟线程是为了解决IO密集型任务的吞吐量，它可以高效通过少数线程去调度大量虚拟线程；<br>
+虚拟线程在执行到IO操作或Blocking操作时，会自动切换到其他虚拟线程执行，从而避免当前线程等待，能最大化线程的执行效率。<br>
+...</p>
 <h3>函数式编程</h3>
 <h4>FunctionalInterface</h4>
 <p>单抽象方法接口被称为<code class="notranslate">FunctionalInterface</code>,可用<code class="notranslate">@FunctionalInterface</code>来进行编译检查。<br>
@@ -436,6 +441,10 @@ SingleThreadExecutor：仅单线程执行的线程池。<br>
 </blockquote>
 <h4>Stream</h4>
 <p>...</p>
+<h3>网络编程</h3>
+<p>TCP/UDP/SMTP/Http/RMI...<br>
+复习网络知识时可扩展...</p>
+<h3>web开发</h3>
 <h3>参考资料</h3>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p>
 <p><a href="https://www.runoob.com/java/java-tutorial.html" rel="nofollow">菜鸟教程</a></p></div>
