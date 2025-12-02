@@ -8,9 +8,8 @@
 `javac main`运行类文件
 有包名编译运行时需加上包名，编译时使用`-encoding`可以设置编码，在`src`目录编译运行。
 ```
-javac com\itranswarp\learnjava\Main.java
-//javac -encoding UTF-8 com\itranswarp\learnjava\Main.java
-java com.itranswarp.learnjava.Main
+javac com\itranswarp\learnjava\Main.java && java com.itranswarp.learnjava.Main
+javac -encoding UTF-8 com\itranswarp\learnjava\Main.java && java com.itranswarp.learnjava.Main
 ```
 ## 语法
 
@@ -368,11 +367,106 @@ class Mthreads implements Runnable{
 `notify()/notifyAll()`在锁对象上调用，唤醒一个/所有在该锁对象上等待的线程。
 
 #### 读写锁
-
-
 `ReadWriteLock`可以实现读写锁，允许多个线程同时读，但只要有一个线程在写，其他线程就必须等待。（悲观锁）
 
 `StampedLock`是一种乐观锁，读的过程中允许写锁写入，有小概率导致数据不一致时用悲观锁处理冲突。
+#### Semaphore
+
+`Semaphore`是信号量，用于限制资源被最多N个线程访问。
+`semaphore.acquire();`获取，`semaphore.release();`释放。
+
+#### 线程池
+
+`ExecutorService`接口表示线程池
+
+```Java
+// 创建固定大小的线程池:
+ExecutorService executor = Executors.newFixedThreadPool(3);
+// 提交任务:
+executor.submit(task1);
+executor.submit(task2);
+executor.submit(task3);
+executor.submit(task4);
+executor.submit(task5);
+```
+FixedThreadPool：线程数固定的线程池；
+CachedThreadPool：线程数根据任务动态调整的线程池；
+SingleThreadExecutor：仅单线程执行的线程池。
+放入ScheduledThreadPool的任务可以定期反复执行。
+
+[Java面试：为什么不建议使用Executors创建线程池？](https://blog.csdn.net/ARPOSPF/article/details/120276045)
+
+#### Future
+
+`Callable`接口，和`Runnable`接口比，它多了一个返回值。
+
+可以用`Future`获取`Callable`任务异步执行的结果，获取会在执行完成前阻塞。
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool(4); 
+// 定义任务:
+Callable<String> task = new Task();
+// 提交任务并获得Future:
+Future<String> future = executor.submit(task);
+// 从Future获取异步执行返回的结果:
+String result = future.get(); // 可能阻塞
+```
+
+使用`CompletableFuture`可以实现回调、线程的串行化、并行化。
+
+#### ThreadLocal
+
+使用ThreadLocal来设置单个线程独有的上下文（“局部变量”）。
+
+ThreadLocal实例通常总是以静态字段初始化如下：
+
+```Java
+static ThreadLocal<User> threadLocalUser = new ThreadLocal<>();
+```
+
+典型使用如下: 
+
+```Java
+void processUser(user) {
+    try {
+        threadLocalUser.set(user);
+        step1();
+        step2();
+        log();
+    } finally {
+        threadLocalUser.remove();
+    }
+}
+...
+        User u = threadLocalUser.get();
+...
+```
+
+`ThreadLocal`本身不会存储任何数据，`ThreadLocal`的`set`方法是将值存储到`Thread`线程本身的`ThreadLocalMap`里面了。
+真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用`ThreadLocoal`的`remove`方法。
+
+### 函数式编程
+
+#### FunctionalInterface
+
+单抽象方法接口被称为`FunctionalInterface`,可用`@FunctionalInterface`来进行编译检查。
+接收`FunctionalInterface`作为参数的时候，可以把实例化的匿名类改写为Lambda表达式；Lambda表达式的参数和返回值类型均可由编译器自动推断。
+`FunctionalInterface`还可以传入：
+符合方法签名的静态方法；
+符合方法签名的实例方法（实例类型被看做第一个参数类型）；
+符合方法签名的构造方法（实例类型被看做返回类型）。
+注：上述方法传入时用使用方法引用。
+
+#### 方法引用
+
+例：`Main`类中静态方法cmp的引用，用`Main::cmp`表示
+
+> You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method. In those cases, it’s often clearer to refer to the existing method by name. Method references enable you to do this; they are compact, easy-to-read lambda expressions for methods that already have a name.
+
+#### Stream
+
+...
+
 ### 参考资料
 
 [廖雪峰的Java教程](https://liaoxuefeng.com/books/java/introduction/index.html)

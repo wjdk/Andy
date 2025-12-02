@@ -105,9 +105,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p><code class="notranslate">java main.java</code>编译<br>
 <code class="notranslate">javac main</code>运行类文件<br>
 有包名编译运行时需加上包名，编译时使用<code class="notranslate">-encoding</code>可以设置编码，在<code class="notranslate">src</code>目录编译运行。</p>
-<pre class="notranslate"><code class="notranslate">javac com\itranswarp\learnjava\Main.java
-//javac -encoding UTF-8 com\itranswarp\learnjava\Main.java
-java com.itranswarp.learnjava.Main
+<pre class="notranslate"><code class="notranslate">javac com\itranswarp\learnjava\Main.java &amp;&amp; java com.itranswarp.learnjava.Main
+javac -encoding UTF-8 com\itranswarp\learnjava\Main.java &amp;&amp; java com.itranswarp.learnjava.Main
 </code></pre>
 <h2>语法</h2>
 <h3>基本语法</h3>
@@ -372,6 +371,71 @@ Java的接口特指interface的定义，表示一个接口类型和一组方法�
 <h4>读写锁</h4>
 <p><code class="notranslate">ReadWriteLock</code>可以实现读写锁，允许多个线程同时读，但只要有一个线程在写，其他线程就必须等待。（悲观锁）</p>
 <p><code class="notranslate">StampedLock</code>是一种乐观锁，读的过程中允许写锁写入，有小概率导致数据不一致时用悲观锁处理冲突。</p>
+<h4>Semaphore</h4>
+<p><code class="notranslate">Semaphore</code>是信号量，用于限制资源被最多N个线程访问。<br>
+<code class="notranslate">semaphore.acquire();</code>获取，<code class="notranslate">semaphore.release();</code>释放。</p>
+<h4>线程池</h4>
+<p><code class="notranslate">ExecutorService</code>接口表示线程池</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c">// 创建固定大小的线程池:</span>
+<span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">3</span>);
+<span class="pl-c">// 提交任务:</span>
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task1</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task2</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task3</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task4</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task5</span>);</pre></div>
+<p>FixedThreadPool：线程数固定的线程池；<br>
+CachedThreadPool：线程数根据任务动态调整的线程池；<br>
+SingleThreadExecutor：仅单线程执行的线程池。<br>
+放入ScheduledThreadPool的任务可以定期反复执行。</p>
+<p><a href="https://blog.csdn.net/ARPOSPF/article/details/120276045" rel="nofollow">Java面试：为什么不建议使用Executors创建线程池？</a></p>
+<h4>Future</h4>
+<p><code class="notranslate">Callable</code>接口，和<code class="notranslate">Runnable</code>接口比，它多了一个返回值。</p>
+<p>可以用<code class="notranslate">Future</code>获取<code class="notranslate">Callable</code>任务异步执行的结果，获取会在执行完成前阻塞。</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">4</span>); 
+<span class="pl-c">// 定义任务:</span>
+<span class="pl-smi">Callable</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">task</span> = <span class="pl-k">new</span> <span class="pl-smi">Task</span>();
+<span class="pl-c">// 提交任务并获得Future:</span>
+<span class="pl-smi">Future</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">future</span> = <span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task</span>);
+<span class="pl-c">// 从Future获取异步执行返回的结果:</span>
+<span class="pl-smi">String</span> <span class="pl-s1">result</span> = <span class="pl-s1">future</span>.<span class="pl-en">get</span>(); <span class="pl-c">// 可能阻塞</span></pre></div>
+<p>使用<code class="notranslate">CompletableFuture</code>可以实现回调、线程的串行化、并行化。</p>
+<h4>ThreadLocal</h4>
+<p>使用ThreadLocal来设置单个线程独有的上下文（“局部变量”）。</p>
+<p>ThreadLocal实例通常总是以静态字段初始化如下：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">static</span> <span class="pl-smi">ThreadLocal</span>&lt;<span class="pl-smi">User</span>&gt; <span class="pl-s1">threadLocalUser</span> = <span class="pl-k">new</span> <span class="pl-smi">ThreadLocal</span>&lt;&gt;();</pre></div>
+<p>典型使用如下:</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">void</span> <span class="pl-en">processUser</span>(<span class="pl-smi">user</span>) {
+    <span class="pl-k">try</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">set</span>(<span class="pl-s1">user</span>);
+        <span class="pl-en">step1</span>();
+        <span class="pl-en">step2</span>();
+        <span class="pl-en">log</span>();
+    } <span class="pl-k">finally</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">remove</span>();
+    }
+}
+...
+        <span class="pl-smi">User</span> <span class="pl-s1">u</span> = <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">get</span>();
+...</pre></div>
+<p><code class="notranslate">ThreadLocal</code>本身不会存储任何数据，<code class="notranslate">ThreadLocal</code>的<code class="notranslate">set</code>方法是将值存储到<code class="notranslate">Thread</code>线程本身的<code class="notranslate">ThreadLocalMap</code>里面了。<br>
+真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用<code class="notranslate">ThreadLocoal</code>的<code class="notranslate">remove</code>方法。</p>
+<h3>函数式编程</h3>
+<h4>FunctionalInterface</h4>
+<p>单抽象方法接口被称为<code class="notranslate">FunctionalInterface</code>,可用<code class="notranslate">@FunctionalInterface</code>来进行编译检查。<br>
+接收<code class="notranslate">FunctionalInterface</code>作为参数的时候，可以把实例化的匿名类改写为Lambda表达式；Lambda表达式的参数和返回值类型均可由编译器自动推断。<br>
+<code class="notranslate">FunctionalInterface</code>还可以传入：<br>
+符合方法签名的静态方法；<br>
+符合方法签名的实例方法（实例类型被看做第一个参数类型）；<br>
+符合方法签名的构造方法（实例类型被看做返回类型）。<br>
+注：上述方法传入时用使用方法引用。</p>
+<h4>方法引用</h4>
+<p>例：<code class="notranslate">Main</code>类中静态方法cmp的引用，用<code class="notranslate">Main::cmp</code>表示</p>
+<blockquote>
+<p>You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method. In those cases, it’s often clearer to refer to the existing method by name. Method references enable you to do this; they are compact, easy-to-read lambda expressions for methods that already have a name.</p>
+</blockquote>
+<h4>Stream</h4>
+<p>...</p>
 <h3>参考资料</h3>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p>
 <p><a href="https://www.runoob.com/java/java-tutorial.html" rel="nofollow">菜鸟教程</a></p></div>
