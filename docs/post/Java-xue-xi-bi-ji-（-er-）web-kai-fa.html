@@ -324,13 +324,13 @@ out：表示HttpServletResponse的PrintWriter；<br>
 session：表示当前HttpSession对象；<br>
 request：表示HttpServletRequest对象。</p>
 <h3>简易MVC例子</h3>
-<p><a target="_blank" rel="noopener noreferrer" href="image.png"><img src="image.png" alt="" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605"><img width="471" height="243" alt="Image" src="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605" style="max-width: 100%; height: auto; max-height: 243px;"></a></p>
 <p>Controller(UserServlet)根据请求内容从数据库中获取Model(user：一个Javabean或map)并把Model转发给View(user.jsp)渲染，View返回响应内容给Browser。</p>
 <h3>MVC框架</h3>
 <p>我们希望业务逻辑(Controller)和Servlet接口分离，由Java类实现；<br>
 JSP更换为其他更好用的模版引擎。</p>
 <p>新框架如下：</p>
-<p><a target="_blank" rel="noopener noreferrer" href="image-1.png"><img src="image-1.png" alt="alt text" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f"><img width="417" height="305" alt="Image" src="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f" style="max-width: 100%; height: auto; max-height: 305px;"></a></p>
 <h4>项目的具体实现：</h4>
 <p>Controller是Java业务类对象（单例类），一个Controller可能封装多个方法处理不同路径的请求。<br>
 DispatcherServlet的map对象<code class="notranslate">getMappings</code>和<code class="notranslate">postMappings</code>保存了路径到GetDispatcher/PostDispatcher对象的映射。<br>

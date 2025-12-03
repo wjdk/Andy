@@ -265,7 +265,7 @@ request：表示HttpServletRequest对象。
 
 ### 简易MVC例子
 
-![](image.png)
+<img width="471" height="243" alt="Image" src="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605" />
 
 Controller(UserServlet)根据请求内容从数据库中获取Model(user：一个Javabean或map)并把Model转发给View(user.jsp)渲染，View返回响应内容给Browser。
 
@@ -276,7 +276,7 @@ JSP更换为其他更好用的模版引擎。
 
 新框架如下：
 
-![alt text](image-1.png)
+<img width="417" height="305" alt="Image" src="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f" />
 
 #### 项目的具体实现：
 
