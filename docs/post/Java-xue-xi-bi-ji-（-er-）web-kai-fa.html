@@ -150,6 +150,26 @@ Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-s1">resources</span>.<span class="pl-en">addPreResources</span>(
         <span class="pl-k">new</span> <span class="pl-smi">DirResourceSet</span>(<span class="pl-s1">resources</span>, <span class="pl-s">"/WEB-INF/classes"</span>, <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s">"target/classes"</span>).<span class="pl-en">getAbsolutePath</span>(), <span class="pl-s">"/"</span>));</pre></div>
 <p>这段代码表示Tomcat会去target/classes目录下去寻找需要加载的<code class="notranslate">Servlet</code>类文件</p>
+<h3>重定向和转发</h3>
+<p>重定向要求浏览器发送新的请求到新的路径，转发是通过转发请求到服务器内部<code class="notranslate">servlet</code>来处理请求。</p>
+<p>重定向</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/hi"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">RedirectServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
+        <span class="pl-c">// 构造重定向的路径:</span>
+        <span class="pl-smi">String</span> <span class="pl-s1">name</span> = <span class="pl-s1">req</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"name"</span>);
+        <span class="pl-smi">String</span> <span class="pl-s1">redirectToUrl</span> = <span class="pl-s">"/hello"</span> + (<span class="pl-s1">name</span> == <span class="pl-c1">null</span> ? <span class="pl-s">""</span> : <span class="pl-s">"?name="</span> + <span class="pl-s1">name</span>);
+        <span class="pl-c">// 发送重定向响应:</span>
+        <span class="pl-s1">resp</span>.<span class="pl-en">sendRedirect</span>(<span class="pl-s1">redirectToUrl</span>);
+    }
+}</pre></div>
+<p>转发</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/morning"</span>)
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">ForwardServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
+        <span class="pl-s1">req</span>.<span class="pl-en">getRequestDispatcher</span>(<span class="pl-s">"/hello"</span>).<span class="pl-en">forward</span>(<span class="pl-s1">req</span>, <span class="pl-s1">resp</span>);
+    }
+}</pre></div>
 <h3>Cookie和Session</h3>
 <h4>Cookie</h4>
 <p>通过<code class="notranslate">HttpServletResponse</code>设置<code class="notranslate">cookie</code>以后，浏览器会在有效期内访问生效路径时带上<code class="notranslate">cookie</code>。<br>
@@ -296,6 +316,48 @@ Servlet容器会自动创建<code class="notranslate">JSESSIONID</code>送给浏
 创建完成<code class="notranslate">Session</code>以后会在返回时设置浏览器cookie的<code class="notranslate">SessionId</code>（对应代码如下）。</p>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">Cookie</span> <span class="pl-s1">cookie</span> = <span class="pl-smi">ApplicationSessionCookieConfig</span>.<span class="pl-en">createSessionCookie</span>(<span class="pl-s1">context</span>, <span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">getIdInternal</span>(), <span class="pl-smi">this</span>.<span class="pl-en">isSecure</span>());
 <span class="pl-smi">this</span>.<span class="pl-s1">response</span>.<span class="pl-en">addSessionCookieInternal</span>(<span class="pl-s1">cookie</span>);</pre></div>
+<h3>JSP</h3>
+<p>JSP是Java Server Pages的缩写，它的文件必须放到/src/main/webapp下，文件名必须以.jsp结尾，整个文件与HTML并无太大区别，但需要插入变量，或者动态输出的地方，使用特殊指令&lt;% ... %&gt;。<br>
+JSP在执行前首先被Servlet容器编译成一个Servlet。</p>
+<p>JSP页面内置了几个变量：<br>
+out：表示HttpServletResponse的PrintWriter；<br>
+session：表示当前HttpSession对象；<br>
+request：表示HttpServletRequest对象。</p>
+<h3>简易MVC例子</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="image.png"><img src="image.png" alt="" style="max-width: 100%;"></a></p>
+<p>Controller(UserServlet)根据请求内容从数据库中获取Model(user：一个Javabean或map)并把Model转发给View(user.jsp)渲染，View返回响应内容给Browser。</p>
+<h3>MVC框架</h3>
+<p>我们希望业务逻辑(Controller)和Servlet接口分离，由Java类实现；<br>
+JSP更换为其他更好用的模版引擎。</p>
+<p>新框架如下：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="image-1.png"><img src="image-1.png" alt="alt text" style="max-width: 100%;"></a></p>
+<h4>项目的具体实现：</h4>
+<p>Controller是Java业务类对象（单例类），一个Controller可能封装多个方法处理不同路径的请求。<br>
+DispatcherServlet的map对象<code class="notranslate">getMappings</code>和<code class="notranslate">postMappings</code>保存了路径到GetDispatcher/PostDispatcher对象的映射。<br>
+GetDispatcher/PostDispatcher对象保存了对应Controller的单个方法（包括方法引用、类、参数名列表和参数类型列表），用于处理单个路径的请求。<br>
+<code class="notranslate">GetDispatcher/PostDispatcher</code>继承自同一抽象类<code class="notranslate">AbstractDispatcher</code></p>
+<p>请求响应过程：</p>
+<ol>
+<li>Browser发送请求到<code class="notranslate">DispatcherServlet</code>;</li>
+<li><code class="notranslate">DispatcherServlet</code>根据请求类型(get/post)和路径从map里找到对应的<code class="notranslate">AbstractDispatcher</code>实例；</li>
+<li><code class="notranslate">AbstractDispatcher</code>实例根据请求和参数要求解析出具体参数，利用反射语法调用<code class="notranslate">Controller</code>的对应方法获得<code class="notranslate">ModelAndView</code>；</li>
+<li><code class="notranslate">DispatcherServlet</code>再将得到的<code class="notranslate">ModelAndView</code>交给<code class="notranslate">ViewEngine</code>渲染返回响应。</li>
+</ol>
+<p>资源加载过程：</p>
+<blockquote>
+<p>Servlet容器创建当前Servlet实例后，会自动调用init(ServletConfig)方法</p>
+</blockquote>
+<ol>
+<li>Servlet容器调用<code class="notranslate">DispatcherServlet</code>的<code class="notranslate">init()</code>方法;</li>
+<li><code class="notranslate">init()</code>加载所有预加载的业务类(controller)方法，通过注解得到这些方法处理的请求路径，创建对应的<code class="notranslate">(path,AbstractDispatcher)</code>键值对加到<code class="notranslate">DispatcherServlet</code>的map对象里。</li>
+<li>创建<code class="notranslate">viewEngine</code>对象（模版引擎）</li>
+</ol>
+<p>渲染过程：<br>
+ModelAndView分别表示需要渲染的数据对象（如Javabean）和页面(如html)；<br>
+模版引擎（如pebbleEngine）会根据Model和View自动渲染页面。<br>
+tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现模版的继承，每一个页面都首先渲染<code class="notranslate">_base.html</code>再渲染自己独有的内容。</p>
+<p>总结：</p>
+<p>实现了业务逻辑和框架分离。</p>
 <h2>参考资料</h2>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>

@@ -62,6 +62,34 @@ resources.addPreResources(
 ```
 这段代码表示Tomcat会去target/classes目录下去寻找需要加载的`Servlet`类文件
 
+### 重定向和转发
+
+重定向要求浏览器发送新的请求到新的路径，转发是通过转发请求到服务器内部`servlet`来处理请求。
+
+重定向
+```Java
+@WebServlet(urlPatterns = "/hi")
+public class RedirectServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 构造重定向的路径:
+        String name = req.getParameter("name");
+        String redirectToUrl = "/hello" + (name == null ? "" : "?name=" + name);
+        // 发送重定向响应:
+        resp.sendRedirect(redirectToUrl);
+    }
+}
+
+```
+转发
+```Java
+@WebServlet(urlPatterns = "/morning")
+public class ForwardServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/hello").forward(req, resp);
+    }
+}
+
+```
 ### Cookie和Session
 
 #### Cookie
@@ -225,6 +253,58 @@ Cookie cookie = ApplicationSessionCookieConfig.createSessionCookie(context, this
 this.response.addSessionCookieInternal(cookie);
 ```
 
+### JSP
+
+JSP是Java Server Pages的缩写，它的文件必须放到/src/main/webapp下，文件名必须以.jsp结尾，整个文件与HTML并无太大区别，但需要插入变量，或者动态输出的地方，使用特殊指令<% ... %>。
+JSP在执行前首先被Servlet容器编译成一个Servlet。
+
+JSP页面内置了几个变量：
+out：表示HttpServletResponse的PrintWriter；
+session：表示当前HttpSession对象；
+request：表示HttpServletRequest对象。
+
+### 简易MVC例子
+
+![](image.png)
+
+Controller(UserServlet)根据请求内容从数据库中获取Model(user：一个Javabean或map)并把Model转发给View(user.jsp)渲染，View返回响应内容给Browser。
+
+### MVC框架
+
+我们希望业务逻辑(Controller)和Servlet接口分离，由Java类实现；
+JSP更换为其他更好用的模版引擎。
+
+新框架如下：
+
+![alt text](image-1.png)
+
+#### 项目的具体实现：
+
+Controller是Java业务类对象（单例类），一个Controller可能封装多个方法处理不同路径的请求。
+DispatcherServlet的map对象`getMappings`和`postMappings`保存了路径到GetDispatcher/PostDispatcher对象的映射。
+GetDispatcher/PostDispatcher对象保存了对应Controller的单个方法（包括方法引用、类、参数名列表和参数类型列表），用于处理单个路径的请求。
+`GetDispatcher/PostDispatcher`继承自同一抽象类`AbstractDispatcher`
+
+请求响应过程：
+1. Browser发送请求到`DispatcherServlet`;
+2. `DispatcherServlet`根据请求类型(get/post)和路径从map里找到对应的`AbstractDispatcher`实例；
+3. `AbstractDispatcher`实例根据请求和参数要求解析出具体参数，利用反射语法调用`Controller`的对应方法获得`ModelAndView`；
+4. `DispatcherServlet`再将得到的`ModelAndView`交给`ViewEngine`渲染返回响应。
+
+资源加载过程：
+> Servlet容器创建当前Servlet实例后，会自动调用init(ServletConfig)方法
+1. Servlet容器调用`DispatcherServlet`的`init()`方法;
+2. `init()`加载所有预加载的业务类(controller)方法，通过注解得到这些方法处理的请求路径，创建对应的`(path,AbstractDispatcher)`键值对加到`DispatcherServlet`的map对象里。
+3. 创建`viewEngine`对象（模版引擎）
+
+渲染过程：
+ModelAndView分别表示需要渲染的数据对象（如Javabean）和页面(如html)；
+模版引擎（如pebbleEngine）会根据Model和View自动渲染页面。
+tip:可通过`{% extends "_base.html" %}`实现模版的继承，每一个页面都首先渲染`_base.html`再渲染自己独有的内容。
+
+总结：
+
+实现了业务逻辑和框架分离。
 ## 参考资料
 
 [廖雪峰的Java教程](https://liaoxuefeng.com/books/java/introduction/index.html)
