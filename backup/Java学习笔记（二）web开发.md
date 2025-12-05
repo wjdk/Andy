@@ -280,6 +280,9 @@ JSP更换为其他更好用的模版引擎。
 
 #### 项目的具体实现：
 
+在这个项目中Servelet只有`DispatcherServlet`一个(`@WebServlet(urlPatterns = "/")`)，也就是说所有请求都会匹配到这里。
+> 映射到/的IndexServlet比较特殊，它实际上会接收所有未匹配的路径，相当于/*
+
 Controller是Java业务类对象（单例类），一个Controller可能封装多个方法处理不同路径的请求。
 DispatcherServlet的map对象`getMappings`和`postMappings`保存了路径到GetDispatcher/PostDispatcher对象的映射。
 GetDispatcher/PostDispatcher对象保存了对应Controller的单个方法（包括方法引用、类、参数名列表和参数类型列表），用于处理单个路径的请求。
@@ -305,6 +308,72 @@ tip:可通过`{% extends "_base.html" %}`实现模版的继承，每一个页面
 总结：
 
 实现了业务逻辑和框架分离。
+
+### Filter
+...
+### Listener
+...
+
+## Spring开发
+
+### IoC
+
+传统的程序开发模式实例化一个组件需要先实例化该组件所有的子组件，而子组件的实例化也需要先实例化其子组件，再加上部分组件实例化后应当被很多父组件共享，这会导致及其复杂的依赖关系，且组件之间紧密耦合不易维护。
+
+IoC(Inversion of Control)，所有组件不再由应用程序自己创建和配置，而是由IoC容器负责。
+
+#### DI：依赖注入
+
+```Java
+public class BookService {
+    private DataSource dataSource;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }//属性注入可以改为构造方法注入
+}
+```
+> BookService自己并不会创建DataSource，而是等待外部通过setDataSource()方法来注入一个DataSource。
+
+实例化子组件->外部注入组件：BookService不必关心如何具体实例化dataSource（配置dataSource）属性，而是将其交给IoC容器。
+
+#### IoC容器
+
+IoC容器负责实例化所有的组件并管理组件的生命周期。
+
+可以通过xml文件告诉容器各组件之间的依赖关系。
+可以使用注解来告诉容器如何组装组件（类似xml）。
+
+### AOP
+
+Aspect Oriented Programming：面向接口编程
+
+## 附录：JDBC
+
+### 简介
+![alt text](image.png)
+JDBC是Java程序访问数据库的标准接口，接口的实现由具体的数据库驱动实现。
+### 使用
+
+CRUD使用PreparedStatement而不是直接通过参数拼字符串来避免SQL注入。
+- tip: [try_with_resoures使用](https://juejin.cn/post/6844903446185951240)
+可以使用try(connection)建立连接，这样try语句块结束时connection会被自动正确关闭。
+
+`javax.sql.DataSource`: 通过数据库连接池复用连接,类似线程池。
+
+```Java
+HikariConfig config = new HikariConfig();
+config.setJdbcUrl("jdbc:mysql://localhost:3306/test");
+config.setUsername("root");
+config.setPassword("password");
+config.addDataSourceProperty("connectionTimeout", "1000"); // 连接超时：1秒
+config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
+config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
+DataSource ds = new HikariDataSource(config);
+...
+try (Connection conn = ds.getConnection()) { // 从连接池中获取连接
+}
+```
 ## 参考资料
 
 [廖雪峰的Java教程](https://liaoxuefeng.com/books/java/introduction/index.html)

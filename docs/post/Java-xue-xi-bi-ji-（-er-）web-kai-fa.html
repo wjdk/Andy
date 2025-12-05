@@ -332,6 +332,10 @@ JSP更换为其他更好用的模版引擎。</p>
 <p>新框架如下：</p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f"><img width="417" height="305" alt="Image" src="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f" style="max-width: 100%; height: auto; max-height: 305px;"></a></p>
 <h4>项目的具体实现：</h4>
+<p>在这个项目中Servelet只有<code class="notranslate">DispatcherServlet</code>一个(<code class="notranslate">@WebServlet(urlPatterns = "/")</code>)，也就是说所有请求都会匹配到这里。</p>
+<blockquote>
+<p>映射到/的IndexServlet比较特殊，它实际上会接收所有未匹配的路径，相当于/*</p>
+</blockquote>
 <p>Controller是Java业务类对象（单例类），一个Controller可能封装多个方法处理不同路径的请求。<br>
 DispatcherServlet的map对象<code class="notranslate">getMappings</code>和<code class="notranslate">postMappings</code>保存了路径到GetDispatcher/PostDispatcher对象的映射。<br>
 GetDispatcher/PostDispatcher对象保存了对应Controller的单个方法（包括方法引用、类、参数名列表和参数类型列表），用于处理单个路径的请求。<br>
@@ -358,6 +362,54 @@ ModelAndView分别表示需要渲染的数据对象（如Javabean）和页面(�
 tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现模版的继承，每一个页面都首先渲染<code class="notranslate">_base.html</code>再渲染自己独有的内容。</p>
 <p>总结：</p>
 <p>实现了业务逻辑和框架分离。</p>
+<h3>Filter</h3>
+<p>...</p>
+<h3>Listener</h3>
+<p>...</p>
+<h2>Spring开发</h2>
+<h3>IoC</h3>
+<p>传统的程序开发模式实例化一个组件需要先实例化该组件所有的子组件，而子组件的实例化也需要先实例化其子组件，再加上部分组件实例化后应当被很多父组件共享，这会导致及其复杂的依赖关系，且组件之间紧密耦合不易维护。</p>
+<p>IoC(Inversion of Control)，所有组件不再由应用程序自己创建和配置，而是由IoC容器负责。</p>
+<h4>DI：依赖注入</h4>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">BookService</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>;
+
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">setDataSource</span>(<span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>) {
+        <span class="pl-smi">this</span>.<span class="pl-s1">dataSource</span> = <span class="pl-s1">dataSource</span>;
+    }<span class="pl-c">//属性注入可以改为构造方法注入</span>
+}</pre></div>
+<blockquote>
+<p>BookService自己并不会创建DataSource，而是等待外部通过setDataSource()方法来注入一个DataSource。</p>
+</blockquote>
+<p>实例化子组件-&gt;外部注入组件：BookService不必关心如何具体实例化dataSource（配置dataSource）属性，而是将其交给IoC容器。</p>
+<h4>IoC容器</h4>
+<p>IoC容器负责实例化所有的组件并管理组件的生命周期。</p>
+<p>可以通过xml文件告诉容器各组件之间的依赖关系。<br>
+可以使用注解来告诉容器如何组装组件（类似xml）。</p>
+<h3>AOP</h3>
+<p>Aspect Oriented Programming：面向接口编程</p>
+<h2>附录：JDBC</h2>
+<h3>简介</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="image.png"><img src="image.png" alt="alt text" style="max-width: 100%;"></a><br>
+JDBC是Java程序访问数据库的标准接口，接口的实现由具体的数据库驱动实现。</p>
+<h3>使用</h3>
+<p>CRUD使用PreparedStatement而不是直接通过参数拼字符串来避免SQL注入。</p>
+<ul>
+<li>tip: <a href="https://juejin.cn/post/6844903446185951240" rel="nofollow">try_with_resoures使用</a><br>
+可以使用try(connection)建立连接，这样try语句块结束时connection会被自动正确关闭。</li>
+</ul>
+<p><code class="notranslate">javax.sql.DataSource</code>: 通过数据库连接池复用连接,类似线程池。</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">HikariConfig</span> <span class="pl-s1">config</span> = <span class="pl-k">new</span> <span class="pl-smi">HikariConfig</span>();
+<span class="pl-s1">config</span>.<span class="pl-en">setJdbcUrl</span>(<span class="pl-s">"jdbc:mysql://localhost:3306/test"</span>);
+<span class="pl-s1">config</span>.<span class="pl-en">setUsername</span>(<span class="pl-s">"root"</span>);
+<span class="pl-s1">config</span>.<span class="pl-en">setPassword</span>(<span class="pl-s">"password"</span>);
+<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"connectionTimeout"</span>, <span class="pl-s">"1000"</span>); <span class="pl-c">// 连接超时：1秒</span>
+<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"idleTimeout"</span>, <span class="pl-s">"60000"</span>); <span class="pl-c">// 空闲超时：60秒</span>
+<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"maximumPoolSize"</span>, <span class="pl-s">"10"</span>); <span class="pl-c">// 最大连接数：10</span>
+<span class="pl-smi">DataSource</span> <span class="pl-s1">ds</span> = <span class="pl-k">new</span> <span class="pl-smi">HikariDataSource</span>(<span class="pl-s1">config</span>);
+...
+<span class="pl-k">try</span> (<span class="pl-smi">Connection</span> <span class="pl-s1">conn</span> = <span class="pl-s1">ds</span>.<span class="pl-en">getConnection</span>()) { <span class="pl-c">// 从连接池中获取连接</span>
+}</pre></div>
 <h2>参考资料</h2>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
