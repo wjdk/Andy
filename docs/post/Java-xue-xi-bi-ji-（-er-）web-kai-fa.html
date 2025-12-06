@@ -147,8 +147,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 Servlet容器只会给每个Servlet类创建唯一实例；<br>
 Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 </blockquote>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-s1">resources</span>.<span class="pl-en">addPreResources</span>(
-        <span class="pl-k">new</span> <span class="pl-smi">DirResourceSet</span>(<span class="pl-s1">resources</span>, <span class="pl-s">"/WEB-INF/classes"</span>, <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s">"target/classes"</span>).<span class="pl-en">getAbsolutePath</span>(), <span class="pl-s">"/"</span>));</pre></div>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-s1">resources</span>.<span class="pl-en">addPreResources</span>(<span class="pl-k">new</span> <span class="pl-smi">DirResourceSet</span>(<span class="pl-s1">resources</span>, <span class="pl-s">"/WEB-INF/classes"</span>, <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s">"target/classes"</span>).<span class="pl-en">getAbsolutePath</span>(), <span class="pl-s">"/"</span>));</pre></div>
 <p>这段代码表示Tomcat会去target/classes目录下去寻找需要加载的<code class="notranslate">Servlet</code>类文件</p>
 <h3>重定向和转发</h3>
 <p>重定向要求浏览器发送新的请求到新的路径，转发是通过转发请求到服务器内部<code class="notranslate">servlet</code>来处理请求。</p>
@@ -363,17 +362,37 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
 <p>总结：</p>
 <p>实现了业务逻辑和框架分离。</p>
 <h3>Filter</h3>
-<p>...</p>
+<p>在请求到达Servlet之前，先通过Filter预处理或过滤。</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebFilter</span>(<span class="pl-s">"/*"</span>)<span class="pl-c">//需要该Filter过滤的url，此处表示所有url都需要过滤</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">LogFilter</span> <span class="pl-k">implements</span> <span class="pl-smi">Filter</span> {
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">doFilter</span>(<span class="pl-smi">ServletRequest</span> <span class="pl-s1">request</span>, <span class="pl-smi">ServletResponse</span> <span class="pl-s1">response</span>, <span class="pl-smi">FilterChain</span> <span class="pl-s1">chain</span>)
+            <span class="pl-k">throws</span> <span class="pl-smi">IOException</span>, <span class="pl-smi">ServletException</span> {
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"LogFilter: process "</span> + ((<span class="pl-smi">HttpServletRequest</span>) <span class="pl-s1">request</span>).<span class="pl-en">getRequestURI</span>());
+        <span class="pl-s1">chain</span>.<span class="pl-en">doFilter</span>(<span class="pl-s1">request</span>, <span class="pl-s1">response</span>);<span class="pl-c">//请求继续处理（通过过滤）</span>
+    }
+}</pre></div>
 <h3>Listener</h3>
-<p>...</p>
+<p>监听webApp的事件作出反应，如：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebListener</span><span class="pl-c">//标注了@WebListener，且实现了特定接口的类会被Web服务器自动初始化</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppListener</span> <span class="pl-k">implements</span> <span class="pl-smi">ServletContextListener</span> {
+    <span class="pl-c">//监听`ServletContext`实例的创建和销毁</span>
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">contextInitialized</span>(<span class="pl-smi">ServletContextEvent</span> <span class="pl-s1">sce</span>) {<span class="pl-c">//在整个Web应用程序初始化完成后被调用</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"WebApp initialized."</span>);
+    }
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">contextDestroyed</span>(<span class="pl-smi">ServletContextEvent</span> <span class="pl-s1">sce</span>) {<span class="pl-c">//在Web应用程序关闭后被调用</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"WebApp destroyed."</span>);
+    }
+}</pre></div>
+<p>一个Web服务器可以运行一个或多个WebApp，对于每个WebApp，Web服务器都会为其创建一个全局唯一的<code class="notranslate">ServletContext</code>实例。</p>
 <h2>Spring开发</h2>
+<p><a href="https://javaguide.cn/system-design/framework/spring/spring-common-annotations.html#spring-boot-%E5%9F%BA%E7%A1%80%E6%B3%A8%E8%A7%A3" rel="nofollow">Spring注解1_Spring&amp;SpringBoot常用注解总结</a><br>
+<a href="https://cloud.tencent.com/developer/article/1984063" rel="nofollow">Spring注解2_Spring 的 @Bean 和 @Component 有什么区别？</a></p>
 <h3>IoC</h3>
 <p>传统的程序开发模式实例化一个组件需要先实例化该组件所有的子组件，而子组件的实例化也需要先实例化其子组件，再加上部分组件实例化后应当被很多父组件共享，这会导致及其复杂的依赖关系，且组件之间紧密耦合不易维护。</p>
 <p>IoC(Inversion of Control)，所有组件不再由应用程序自己创建和配置，而是由IoC容器负责。</p>
 <h4>DI：依赖注入</h4>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">BookService</span> {
     <span class="pl-k">private</span> <span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>;
-
     <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">setDataSource</span>(<span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>) {
         <span class="pl-smi">this</span>.<span class="pl-s1">dataSource</span> = <span class="pl-s1">dataSource</span>;
     }<span class="pl-c">//属性注入可以改为构造方法注入</span>
@@ -385,7 +404,54 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
 <h4>IoC容器</h4>
 <p>IoC容器负责实例化所有的组件并管理组件的生命周期。</p>
 <p>可以通过xml文件告诉容器各组件之间的依赖关系。<br>
-可以使用注解来告诉容器如何组装组件（类似xml）。</p>
+可以使用注解来告诉容器如何组装组件（类似xml）。<br>
+容器使用：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">ApplicationContext</span> <span class="pl-s1">context</span> = <span class="pl-k">new</span> <span class="pl-smi">ClassPathXmlApplicationContext</span>(<span class="pl-s">"application.xml"</span>);<span class="pl-c">//IoC容器(从xml文件读取配置)</span>
+<span class="pl-c">// ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); //从annotation中读取配置</span>
+<span class="pl-smi">UserService</span> <span class="pl-s1">userService</span> = <span class="pl-s1">context</span>.<span class="pl-en">getBean</span>(<span class="pl-smi">UserService</span>.<span class="pl-k">class</span>);<span class="pl-c">//从IoC容器中获取相应类型的bean,IoC容器会自动装配组件</span></pre></div>
+<p>注解使用：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Component</span> <span class="pl-c">//标注为需要IoC容器装配的Javabean</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">UserService</span> {
+    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span><span class="pl-c">//表示该字段需要IoC容器注入</span>
+    <span class="pl-smi">MailService</span> <span class="pl-s1">mailService</span>;
+    ...
+}
+...
+<span class="pl-c1">@</span><span class="pl-c1">Configuration</span><span class="pl-c">//配置类，表示在该类中可以生成多个@Bean方法交由IoC容器处理(同时也相当于声明了@Component)</span>
+<span class="pl-c1">@</span><span class="pl-c1">ComponentScan</span><span class="pl-c">//自动扫描带@Component的类并组装为Bean</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppConfig</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">ApplicationContext</span> <span class="pl-s1">context</span> = <span class="pl-k">new</span> <span class="pl-smi">AnnotationConfigApplicationContext</span>(<span class="pl-smi">AppConfig</span>.<span class="pl-k">class</span>);
+        <span class="pl-smi">UserService</span> <span class="pl-s1">userService</span> = <span class="pl-s1">context</span>.<span class="pl-en">getBean</span>(<span class="pl-smi">UserService</span>.<span class="pl-k">class</span>);
+        <span class="pl-smi">User</span> <span class="pl-s1">user</span> = <span class="pl-s1">userService</span>.<span class="pl-en">login</span>(<span class="pl-s">"bob@example.com"</span>, <span class="pl-s">"password"</span>);
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s1">user</span>.<span class="pl-en">getName</span>());
+    }
+}</pre></div>
+<blockquote>
+<p>tip:@<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/component/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/component">@component</a>和<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/bean/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/bean">@bean</a>的区别<br>
+<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/component/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/component">@component</a>注解作用于类，而<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/bean/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/bean">@bean</a>注解作用于方法；两者都将之后的代码标记为需要IoC容器创建的bean对象。</p>
+</blockquote>
+<p>可以通过<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/propertysource/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/propertysource">@propertysource</a>注解加载自定义的配置文件，再通过<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/value/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/value">@value</a>注入，如</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Configuration</span>
+<span class="pl-c1">@</span><span class="pl-c1">ComponentScan</span>
+<span class="pl-c1">@</span><span class="pl-c1">PropertySource</span>(<span class="pl-s">"app.properties"</span>) <span class="pl-c">// 表示读取classpath的app.properties</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppConfig</span> {
+    ...
+}
+<span class="pl-c1">@</span><span class="pl-c1">Component</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">SmtpConfig</span> { 
+    <span class="pl-c1">@</span><span class="pl-c1">Value</span>(<span class="pl-s">"${smtp.host:localhost}"</span>)<span class="pl-c">//以${key:defaultValue}的形式注入</span>
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">host</span>;
+    ...
+}
+...
+<span class="pl-c1">@</span><span class="pl-c1">Component</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">MailService</span> {
+    <span class="pl-c">//#{}表示从JavaBean读取属性</span>
+    <span class="pl-c">//Class名为SmtpConfig的Bean，它在Spring容器中的默认名称就是smtpConfig</span>
+    <span class="pl-c1">@</span><span class="pl-c1">Value</span>(<span class="pl-s">"#{smtpConfig.host}"</span>)<span class="pl-c">//从名称为smtpConfig的Bean读取host属性</span>
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">smtpHost</span>;
+}</pre></div>
 <h3>AOP</h3>
 <p>Aspect Oriented Programming：面向接口编程</p>
 <h2>附录：JDBC</h2>

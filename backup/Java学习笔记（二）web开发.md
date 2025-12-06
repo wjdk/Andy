@@ -57,8 +57,7 @@ public class SignInServlet extends HttpServlet {
 Servlet容器只会给每个Servlet类创建唯一实例；
 Servlet容器会使用多线程执行doGet()或doPost()方法。
 ```Java
-resources.addPreResources(
-        new DirResourceSet(resources, "/WEB-INF/classes", new File("target/classes").getAbsolutePath(), "/"));
+resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes", new File("target/classes").getAbsolutePath(), "/"));
 ```
 这段代码表示Tomcat会去target/classes目录下去寻找需要加载的`Servlet`类文件
 
@@ -310,11 +309,37 @@ tip:可通过`{% extends "_base.html" %}`实现模版的继承，每一个页面
 实现了业务逻辑和框架分离。
 
 ### Filter
-...
+在请求到达Servlet之前，先通过Filter预处理或过滤。
+```Java
+@WebFilter("/*")//需要该Filter过滤的url，此处表示所有url都需要过滤
+public class LogFilter implements Filter {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        System.out.println("LogFilter: process " + ((HttpServletRequest) request).getRequestURI());
+        chain.doFilter(request, response);//请求继续处理（通过过滤）
+    }
+}
+```
 ### Listener
-...
+监听webApp的事件作出反应，如：
+```Java
+@WebListener//标注了@WebListener，且实现了特定接口的类会被Web服务器自动初始化
+public class AppListener implements ServletContextListener {
+    //监听`ServletContext`实例的创建和销毁
+    public void contextInitialized(ServletContextEvent sce) {//在整个Web应用程序初始化完成后被调用
+        System.out.println("WebApp initialized.");
+    }
+    public void contextDestroyed(ServletContextEvent sce) {//在Web应用程序关闭后被调用
+        System.out.println("WebApp destroyed.");
+    }
+}
+```
+一个Web服务器可以运行一个或多个WebApp，对于每个WebApp，Web服务器都会为其创建一个全局唯一的`ServletContext`实例。
 
 ## Spring开发
+
+[Spring注解1_Spring&SpringBoot常用注解总结](https://javaguide.cn/system-design/framework/spring/spring-common-annotations.html#spring-boot-%E5%9F%BA%E7%A1%80%E6%B3%A8%E8%A7%A3)
+[Spring注解2_Spring 的 @Bean 和 @Component 有什么区别？](https://cloud.tencent.com/developer/article/1984063)
 
 ### IoC
 
@@ -327,7 +352,6 @@ IoC(Inversion of Control)，所有组件不再由应用程序自己创建和配�
 ```Java
 public class BookService {
     private DataSource dataSource;
-
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }//属性注入可以改为构造方法注入
@@ -343,6 +367,60 @@ IoC容器负责实例化所有的组件并管理组件的生命周期。
 
 可以通过xml文件告诉容器各组件之间的依赖关系。
 可以使用注解来告诉容器如何组装组件（类似xml）。
+容器使用：
+```Java
+ApplicationContext context = new ClassPathXmlApplicationContext("application.xml");//IoC容器(从xml文件读取配置)
+// ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); //从annotation中读取配置
+UserService userService = context.getBean(UserService.class);//从IoC容器中获取相应类型的bean,IoC容器会自动装配组件
+```
+注解使用：
+```Java
+@Component //标注为需要IoC容器装配的Javabean
+public class UserService {
+    @Autowired//表示该字段需要IoC容器注入
+    MailService mailService;
+    ...
+}
+...
+@Configuration//配置类，表示在该类中可以生成多个@Bean方法交由IoC容器处理(同时也相当于声明了@Component)
+@ComponentScan//自动扫描带@Component的类并组装为Bean
+public class AppConfig {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserService userService = context.getBean(UserService.class);
+        User user = userService.login("bob@example.com", "password");
+        System.out.println(user.getName());
+    }
+}
+
+```
+> tip:@@Component和@Bean的区别
+@Component注解作用于类，而@Bean注解作用于方法；两者都将之后的代码标记为需要IoC容器创建的bean对象。
+
+可以通过@PropertySource注解加载自定义的配置文件，再通过@Value注入，如
+```Java
+@Configuration
+@ComponentScan
+@PropertySource("app.properties") // 表示读取classpath的app.properties
+public class AppConfig {
+    ...
+}
+@Component
+public class SmtpConfig { 
+    @Value("${smtp.host:localhost}")//以${key:defaultValue}的形式注入
+    private String host;
+    ...
+}
+...
+@Component
+public class MailService {
+    //#{}表示从JavaBean读取属性
+    //Class名为SmtpConfig的Bean，它在Spring容器中的默认名称就是smtpConfig
+    @Value("#{smtpConfig.host}")//从名称为smtpConfig的Bean读取host属性
+    private String smtpHost;
+}
+
+```
 
 ### AOP
 
