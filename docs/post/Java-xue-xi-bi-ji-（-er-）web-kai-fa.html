@@ -453,7 +453,71 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
     <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">smtpHost</span>;
 }</pre></div>
 <h3>AOP</h3>
-<p>Aspect Oriented Programming：面向接口编程</p>
+<p>Aspect Oriented Programming<br>
+...</p>
+<h3>数据库操作</h3>
+<p>JDBC见附录</p>
+<h4>JdbcTemplate</h4>
+<p>创建一个<code class="notranslate">JdbcTemplate</code>实例需要注入<code class="notranslate">DataSource</code></p>
+<p><code class="notranslate">T execute(ConnectionCallback&lt;T&gt; action)</code>方法提供了Jdbc的Connection</p>
+<p><code class="notranslate">T queryForObject(String sql, RowMapper&lt;T&gt; rowMapper, Object... args)</code><br>
+rowMapper是一个lambda函数，负责将ResultSet的当前行<code class="notranslate">(ResultSet rs, int rowNum)</code>映射为一个JavaBean；<br>
+args参数是sql语句的参数（填充问号）。<br>
+queryForObject返回一行记录对应的对象，query返回多行。<br>
+如果在设计表结构的时候，能够和JavaBean的属性一一对应，RowMapper可以直接使用BeanPropertyRowMapper，如<code class="notranslate">new BeanPropertyRowMapper&lt;&gt;(User.class)</code>。</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-smi">User</span> <span class="pl-en">getUserByEmail</span>(<span class="pl-smi">String</span> <span class="pl-s1">email</span>) {
+    <span class="pl-c">// 传入SQL，参数和RowMapper实例:</span>
+    <span class="pl-k">return</span> <span class="pl-s1">jdbcTemplate</span>.<span class="pl-en">queryForObject</span>(<span class="pl-s">"SELECT * FROM users WHERE email = ?"</span>,
+            (<span class="pl-smi">ResultSet</span> <span class="pl-s1">rs</span>, <span class="pl-smi">int</span> <span class="pl-s1">rowNum</span>) -&gt; {
+                <span class="pl-c">// 将ResultSet的当前行映射为一个JavaBean:</span>
+                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">User</span>( <span class="pl-c">// new User object:</span>
+                        <span class="pl-s1">rs</span>.<span class="pl-en">getLong</span>(<span class="pl-s">"id"</span>), <span class="pl-c">// id</span>
+                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"email"</span>), <span class="pl-c">// email</span>
+                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"password"</span>), <span class="pl-c">// password</span>
+                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"name"</span>)); <span class="pl-c">// name</span>
+            },
+            <span class="pl-s1">email</span>);
+}</pre></div>
+<h4>声明式事务</h4>
+<p>事务具有ACID特性。<br>
+<code class="notranslate">@Transactional</code>标注一个事务。<br>
+默认的事务传播级别是<code class="notranslate">REQUIRED</code>：如果当前没有事务，就创建一个新事务，如果当前有事务，就加入到当前事务中执行。（事务只能在当前线程传播，无法跨线程传播）</p>
+<h4>Mybatis</h4>
+<h3>Spring MVC</h3>
+<p>Spring MVC的实现类似于web开发中的MVC框架。</p>
+<p>启动流程：</p>
+<p>Tomcat（servlet容器）启动并添加webApp路径读取web.xml配置；<br>
+根据配置实例化DispatcherServlet并绑定Spring容器（需读取Spring容器类型和对应<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/configuration/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/configuration">@configuration</a>类名）；<br>
+Spring容器会根据注解扫描组装所有<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/component/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/component">@component</a>标记的bean(使用<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/componentscan/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/componentscan">@componentscan</a>)和<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/bean/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/bean">@bean</a>标记的bean（<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/configuration/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/configuration">@configuration</a>下）；<br>
+DispatcherServlet接受所有web.xml中配置的路径（如/*）中的请求，并在Spring容器的帮助下根据注解分配到<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/controller/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/controller">@controller</a>标记的类中。</p>
+<p>修改密码功能实现：</p>
+<p>在业务层userController添加修改密码页面的Get/Post方法（对应路径/updpassword）；<br>
+在webapp添加/updpassword页面的view模版html文件；<br>
+在数据访问层userService添加修改密码对应的数据库操作（合法性判定&amp;和update语句）。<br>
+请求处理流程: DistpatcherServlet-&gt;userController-&gt;userService从数据库获取Model或者修改数据库-&gt;UserController将ModelAndView返回-&gt;....(移交DispatcherServlet自动处理)</p>
+<h3>Rest</h3>
+<p>Rest服务：输入输出都是json便于第三方调用。<br>
+实现：使用<code class="notranslate">@RestController</code>替代<code class="notranslate">@Controller</code></p>
+<p><a href="https://juejin.cn/post/7196852501190557752" rel="nofollow">Jackson的序列化和反序列化</a></p>
+<h3>集成Filter</h3>
+<p>和Servlet开发的内容一样，集成Filter只需要在xml文件中配置，Servlet容器就会自动创建对应的Filter实例；<br>
+但这样创建出来的Filter在Servlet容器中，无法使用Spring容器中的功能（如userService的signin功能）;<br>
+可以使用代理模式创建名为<code class="notranslate">DelegatingFilterProxy</code>的Filter，这个Filter会自动去Spring容器中查找对应名字的bean；<br>
+这样我们就可以把Filter想实现的功能写在Spring容器的bean里面，在Servlet容器创建代理Filter调用Spring容器里bean的方法。<br>
+xml配置代理Filter的内容如下：</p>
+<div class="highlight highlight-text-xml"><pre class="notranslate">&lt;<span class="pl-ent">web-app</span>&gt;
+    &lt;<span class="pl-ent">filter</span>&gt;
+        &lt;<span class="pl-ent">filter-name</span>&gt;authFilter&lt;/<span class="pl-ent">filter-name</span>&gt; <span class="pl-c"><span class="pl-c">&lt;!--</span>会在Spring容器中查找同名的bean<span class="pl-c">--&gt;</span></span>
+        &lt;<span class="pl-ent">filter-class</span>&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;/<span class="pl-ent">filter-class</span>&gt;
+    &lt;/<span class="pl-ent">filter</span>&gt;
+
+    &lt;<span class="pl-ent">filter-mapping</span>&gt;
+        &lt;<span class="pl-ent">filter-name</span>&gt;authFilter&lt;/<span class="pl-ent">filter-name</span>&gt;
+        &lt;<span class="pl-ent">url-pattern</span>&gt;/*&lt;/<span class="pl-ent">url-pattern</span>&gt;
+    &lt;/<span class="pl-ent">filter-mapping</span>&gt;
+    ...
+&lt;/<span class="pl-ent">web-app</span>&gt;
+</pre></div>
 <h2>附录：JDBC</h2>
 <h3>简介</h3>
 <p><a target="_blank" rel="noopener noreferrer" href="image.png"><img src="image.png" alt="alt text" style="max-width: 100%;"></a><br>
@@ -464,6 +528,15 @@ JDBC是Java程序访问数据库的标准接口，接口的实现由具体的数
 <li>tip: <a href="https://juejin.cn/post/6844903446185951240" rel="nofollow">try_with_resoures使用</a><br>
 可以使用try(connection)建立连接，这样try语句块结束时connection会被自动正确关闭。</li>
 </ul>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">try</span> (<span class="pl-smi">Connection</span> <span class="pl-s1">conn</span> = <span class="pl-smi">DriverManager</span>.<span class="pl-en">getConnection</span>(<span class="pl-c1">JDBC_URL</span>, <span class="pl-c1">JDBC_USER</span>, <span class="pl-c1">JDBC_PASSWORD</span>)) {
+    <span class="pl-k">try</span> (<span class="pl-smi">PreparedStatement</span> <span class="pl-s1">ps</span> = <span class="pl-s1">conn</span>.<span class="pl-en">prepareStatement</span>(<span class="pl-s">"INSERT INTO students (id, grade, name, gender) VALUES (?,?,?,?)"</span>)) {
+        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">1</span>, <span class="pl-c1">999</span>); <span class="pl-c">// 注意：索引从1开始</span>
+        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">2</span>, <span class="pl-c1">1</span>); <span class="pl-c">// grade</span>
+        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">3</span>, <span class="pl-s">"Bob"</span>); <span class="pl-c">// name</span>
+        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">4</span>, <span class="pl-s">"M"</span>); <span class="pl-c">// gender</span>
+        <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-s1">ps</span>.<span class="pl-en">executeUpdate</span>(); <span class="pl-c">// 1</span>
+    }
+}</pre></div>
 <p><code class="notranslate">javax.sql.DataSource</code>: 通过数据库连接池复用连接,类似线程池。</p>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">HikariConfig</span> <span class="pl-s1">config</span> = <span class="pl-k">new</span> <span class="pl-smi">HikariConfig</span>();
 <span class="pl-s1">config</span>.<span class="pl-en">setJdbcUrl</span>(<span class="pl-s">"jdbc:mysql://localhost:3306/test"</span>);

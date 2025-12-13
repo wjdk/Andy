@@ -424,7 +424,97 @@ public class MailService {
 
 ### AOP
 
-Aspect Oriented Programming：面向接口编程
+Aspect Oriented Programming
+...
+
+### 数据库操作
+
+JDBC见附录
+
+#### JdbcTemplate
+
+创建一个`JdbcTemplate`实例需要注入`DataSource`
+
+`T execute(ConnectionCallback<T> action)`方法提供了Jdbc的Connection
+
+`T queryForObject(String sql, RowMapper<T> rowMapper, Object... args)`
+rowMapper是一个lambda函数，负责将ResultSet的当前行`(ResultSet rs, int rowNum)`映射为一个JavaBean；
+args参数是sql语句的参数（填充问号）。
+queryForObject返回一行记录对应的对象，query返回多行。
+如果在设计表结构的时候，能够和JavaBean的属性一一对应，RowMapper可以直接使用BeanPropertyRowMapper，如`new BeanPropertyRowMapper<>(User.class)`。
+
+```Java
+public User getUserByEmail(String email) {
+    // 传入SQL，参数和RowMapper实例:
+    return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?",
+            (ResultSet rs, int rowNum) -> {
+                // 将ResultSet的当前行映射为一个JavaBean:
+                return new User( // new User object:
+                        rs.getLong("id"), // id
+                        rs.getString("email"), // email
+                        rs.getString("password"), // password
+                        rs.getString("name")); // name
+            },
+            email);
+}
+
+```
+
+#### 声明式事务
+事务具有ACID特性。
+`@Transactional`标注一个事务。
+默认的事务传播级别是`REQUIRED`：如果当前没有事务，就创建一个新事务，如果当前有事务，就加入到当前事务中执行。（事务只能在当前线程传播，无法跨线程传播）
+
+#### Mybatis
+
+
+### Spring MVC
+
+Spring MVC的实现类似于web开发中的MVC框架。
+
+启动流程：
+
+Tomcat（servlet容器）启动并添加webApp路径读取web.xml配置；
+根据配置实例化DispatcherServlet并绑定Spring容器（需读取Spring容器类型和对应@Configuration类名）；
+Spring容器会根据注解扫描组装所有@Component标记的bean(使用@ComponentScan)和@Bean标记的bean（@Configuration下）；
+DispatcherServlet接受所有web.xml中配置的路径（如/*）中的请求，并在Spring容器的帮助下根据注解分配到@Controller标记的类中。
+
+修改密码功能实现：
+
+在业务层userController添加修改密码页面的Get/Post方法（对应路径/updpassword）；
+在webapp添加/updpassword页面的view模版html文件；
+在数据访问层userService添加修改密码对应的数据库操作（合法性判定&和update语句）。
+请求处理流程: DistpatcherServlet->userController->userService从数据库获取Model或者修改数据库->UserController将ModelAndView返回->....(移交DispatcherServlet自动处理)
+
+### Rest
+
+Rest服务：输入输出都是json便于第三方调用。
+实现：使用`@RestController`替代`@Controller`
+
+[Jackson的序列化和反序列化](https://juejin.cn/post/7196852501190557752)
+
+### 集成Filter
+
+和Servlet开发的内容一样，集成Filter只需要在xml文件中配置，Servlet容器就会自动创建对应的Filter实例；
+但这样创建出来的Filter在Servlet容器中，无法使用Spring容器中的功能（如userService的signin功能）;
+可以使用代理模式创建名为`DelegatingFilterProxy`的Filter，这个Filter会自动去Spring容器中查找对应名字的bean；
+这样我们就可以把Filter想实现的功能写在Spring容器的bean里面，在Servlet容器创建代理Filter调用Spring容器里bean的方法。
+xml配置代理Filter的内容如下：
+```xml
+<web-app>
+    <filter>
+        <filter-name>authFilter</filter-name> <!--会在Spring容器中查找同名的bean-->
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    ...
+</web-app>
+
+```
 
 ## 附录：JDBC
 
@@ -436,6 +526,20 @@ JDBC是Java程序访问数据库的标准接口，接口的实现由具体的数
 CRUD使用PreparedStatement而不是直接通过参数拼字符串来避免SQL注入。
 - tip: [try_with_resoures使用](https://juejin.cn/post/6844903446185951240)
 可以使用try(connection)建立连接，这样try语句块结束时connection会被自动正确关闭。
+
+
+```Java
+try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO students (id, grade, name, gender) VALUES (?,?,?,?)")) {
+        ps.setObject(1, 999); // 注意：索引从1开始
+        ps.setObject(2, 1); // grade
+        ps.setObject(3, "Bob"); // name
+        ps.setObject(4, "M"); // gender
+        int n = ps.executeUpdate(); // 1
+    }
+}
+```
+
 
 `javax.sql.DataSource`: 通过数据库连接池复用连接,类似线程池。
 
