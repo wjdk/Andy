@@ -19,16 +19,16 @@ RequestVote Rpc: 如果发送Rpc的任期号<投票者的任期号，拒绝投�
 Leader被选举出来后会启动三个协程，分别是leaderTicker,appendChecker和commitChecker。
 leaderTicker会定期给follower发送心跳信息，使用AppendEntries Rpc发送空日志实现。
 appendChecker会定期尝试向follower同步leader的日志：
-leader会记录每个服务器的nextIndex表示该服务器下一个需要同步的日志，每一次同步Follower时，会发送对应的nextIndex到当前最新日志位置的所有日志。
+leader会记录每个服务器的nextIndex表示该服务器下一个需要同步的日志，每一次同步Follower时，会发送对应的nextIndex到当前最新日志位置的所有日志。若更新失败，leader会将对应的nextIndex减一，这样如果日志不一致总有一次nextIndex合法可以更新。
 commitChecker会定期检查还未提交的日志是否可以提交：
 通过leader的nextIndex数组可以得到当前已更新日志的服务器数量，若过半则可提交，更新leader的commitIndex。
 
 `Start(command)`时仅仅由Leader在本地执行相应的日志。在appendChecker中每隔一段时间尝试将Follower与leader同步。
 
-AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明是旧的leader更新失败。否则判断RPC的PrevLogTerm和当前日志是否吻合，不吻合则更新失败，否则从PrevLogTerm开始更新日志。所有AppendEntries RPC（包括心跳）都会试图根据Leader的commitIndex更新当前Follower的commitIndex（若min(leaderCommit,len(rf.log)-1)更大则更新）。
+AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明是旧的leader更新失败。否则判断RPC的PrevLogTerm和当前日志是否吻合，不吻合则更新失败，否则从PrevLogTerm开始更新日志。
+所有AppendEntries RPC（包括心跳）都会试图根据Leader的commitIndex更新当前Follower的commitIndex（若min(leaderCommit,len(rf.log)-1)更大则更新）。
 
 每个服务器初始化后都会启动一个apply()协程，定期检查自己的commitIndex是否更新，若更新则实际上提交commitIndex更新区间的日志。
-
 
 ### QA
 
