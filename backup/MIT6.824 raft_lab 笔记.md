@@ -27,7 +27,7 @@ commitChecker会定期检查还未提交的日志是否可以提交：
 
 AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明是旧的leader更新失败。否则判断RPC的PrevLogTerm和当前日志是否吻合，不吻合则更新失败，否则从PrevLogTerm开始更新日志。所有AppendEntries RPC（包括心跳）都会试图根据Leader的commitIndex更新当前Follower的commitIndex（若min(leaderCommit,len(rf.log)-1)更大则更新）。
 
-每个服务器初始化后都会启动一个apply()协程，定期检查自己的commitIndex是否更新，若更新则实际上提交日志。
+每个服务器初始化后都会启动一个apply()协程，定期检查自己的commitIndex是否更新，若更新则实际上提交commitIndex更新区间的日志。
 
 
 ### QA
