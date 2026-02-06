@@ -23,7 +23,7 @@ leader会记录每个服务器的nextIndex表示该服务器下一个需要同�
 commitChecker会定期检查还未提交的日志是否可以提交：
 通过leader的nextIndex数组可以得到当前已更新日志的服务器数量，若过半则可提交，更新leader的commitIndex。
 
-`Start(command)`时仅仅由Leader在本地执行相应的日志。在appendChecker中每隔一段时间尝试将Follower与leader同步。
+`Start(command)`时客户端会向所有服务器发送执行命令请求，但只由认为自己是Leader的服务器会在本地执行相应的日志。在appendChecker中每隔一段时间尝试将Follower与leader同步。
 
 AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明是旧的leader更新失败。否则判断RPC的PrevLogTerm和当前日志是否吻合，不吻合则更新失败，否则从PrevLogTerm开始更新日志。
 所有AppendEntries RPC（包括心跳）都会试图根据Leader的commitIndex更新当前Follower的commitIndex（若min(leaderCommit,len(rf.log)-1)更大则更新）。
@@ -32,7 +32,9 @@ AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明�
 
 ### QA
 
-Q：为什么不在Start(command)时直接尝试更新Follower的日志。
+Q：为什么不在Start(command)时直接尝试更新Follower的日志？
 A：由于网络或者服务器崩溃原因Follower可能没有办法立即更新日志，而我们需要在服务器恢复的第一时间恢复正常工作，所以采用这种协程轮询的方式。
 
+Q：什么情况下会出现两个Leader？
+A: 有A,B,C,D,E五台服务器，A初始为Leader。A、B发生网络分区，和C、D、E断开连接后，C成为新的Leader，但A依旧为Leader，此时客户端执行新的命令，C执行的命令能得到过半认可成功提交，A只能得到AB的认可无法提交。此时网络恢复连接后，由于C是经过新的选举后的Leader任期号更高，所以A会变为旧的leader在RPC的过程中转变为Follower。正确性：任期号更高的Leader总是得到了超过半数认可，因此执行日志时实际会提交日志的只有新leader而不是旧leader。
 

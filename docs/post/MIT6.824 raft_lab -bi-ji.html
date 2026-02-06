@@ -92,13 +92,15 @@ appendChecker会定期尝试向follower同步leader的日志：<br>
 leader会记录每个服务器的nextIndex表示该服务器下一个需要同步的日志，每一次同步Follower时，会发送对应的nextIndex到当前最新日志位置的所有日志。若更新失败，leader会将对应的nextIndex减一，这样如果日志不一致总有一次nextIndex合法可以更新。<br>
 commitChecker会定期检查还未提交的日志是否可以提交：<br>
 通过leader的nextIndex数组可以得到当前已更新日志的服务器数量，若过半则可提交，更新leader的commitIndex。</p>
-<p><code class="notranslate">Start(command)</code>时仅仅由Leader在本地执行相应的日志。在appendChecker中每隔一段时间尝试将Follower与leader同步。</p>
+<p><code class="notranslate">Start(command)</code>时客户端会向所有服务器发送执行命令请求，但只由认为自己是Leader的服务器会在本地执行相应的日志。在appendChecker中每隔一段时间尝试将Follower与leader同步。</p>
 <p>AppendEntries RPC: 若Leader的任期号小于当前Follower任期号，说明是旧的leader更新失败。否则判断RPC的PrevLogTerm和当前日志是否吻合，不吻合则更新失败，否则从PrevLogTerm开始更新日志。<br>
 所有AppendEntries RPC（包括心跳）都会试图根据Leader的commitIndex更新当前Follower的commitIndex（若min(leaderCommit,len(rf.log)-1)更大则更新）。</p>
 <p>每个服务器初始化后都会启动一个apply()协程，定期检查自己的commitIndex是否更新，若更新则实际上提交commitIndex更新区间的日志。</p>
 <h3>QA</h3>
-<p>Q：为什么不在Start(command)时直接尝试更新Follower的日志。<br>
-A：由于网络或者服务器崩溃原因Follower可能没有办法立即更新日志，而我们需要在服务器恢复的第一时间恢复正常工作，所以采用这种协程轮询的方式。</p></div>
+<p>Q：为什么不在Start(command)时直接尝试更新Follower的日志？<br>
+A：由于网络或者服务器崩溃原因Follower可能没有办法立即更新日志，而我们需要在服务器恢复的第一时间恢复正常工作，所以采用这种协程轮询的方式。</p>
+<p>Q：什么情况下会出现两个Leader？<br>
+A: 有A,B,C,D,E五台服务器，A初始为Leader。A、B发生网络分区，和C、D、E断开连接后，C成为新的Leader，但A依旧为Leader，此时客户端执行新的命令，C执行的命令能得到过半认可成功提交，A只能得到AB的认可无法提交。此时网络恢复连接后，由于C是经过新的选举后的Leader任期号更高，所以A会变为旧的leader在RPC的过程中转变为Follower。正确性：任期号更高的Leader总是得到了超过半数认可，因此执行日志时实际会提交日志的只有新leader而不是旧leader。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
