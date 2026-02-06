@@ -100,7 +100,9 @@ commitChecker会定期检查还未提交的日志是否可以提交：<br>
 <p>Q：为什么不在Start(command)时直接尝试更新Follower的日志？<br>
 A：由于网络或者服务器崩溃原因Follower可能没有办法立即更新日志，而我们需要在服务器恢复的第一时间恢复正常工作，所以采用这种协程轮询的方式。</p>
 <p>Q：什么情况下会出现两个Leader？<br>
-A: 有A,B,C,D,E五台服务器，A初始为Leader。A、B发生网络分区，和C、D、E断开连接后，C成为新的Leader，但A依旧为Leader，此时客户端执行新的命令，C执行的命令能得到过半认可成功提交，A只能得到AB的认可无法提交。此时网络恢复连接后，由于C是经过新的选举后的Leader任期号更高，所以A会变为旧的leader在RPC的过程中转变为Follower。正确性：任期号更高的Leader总是得到了超过半数认可，因此执行日志时实际会提交日志的只有新leader而不是旧leader。</p></div>
+A: 有A,B,C,D,E五台服务器，A初始为Leader。A、B发生网络分区，和C、D、E断开连接后，C成为新的Leader，但A依旧为Leader，此时客户端执行新的命令，C执行的命令能得到过半认可成功提交，A只能得到AB的认可无法提交。此时网络恢复连接后，由于C是经过新的选举后的Leader任期号更高，所以A会变为旧的leader在RPC的过程中转变为Follower。正确性：任期号更高的Leader总是得到了超过半数认可，因此执行日志时实际会提交日志的只有新leader而不是旧leader。</p>
+<p>Q：实现过程中经常遇到的问题？<br>
+A: 死锁。例如两个go routine A和B并行运行。A在临界区给channel发送消息,B的代码开头有一段临界区代码之后接受channel的信息，如果A先运行会死锁。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
