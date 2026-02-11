@@ -31,7 +31,7 @@
 <meta property="og:url" content="https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji-%EF%BC%88-er-%EF%BC%89web-kai-fa.html">
 <meta property="og:image" content="https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg">
 <title>Java学习笔记（二）web开发</title>
-<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
 
 
 </head>
@@ -55,17 +55,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     body {padding: 8px;}
     .postTitle{font-size:24px;}
 }
-.copy-feedback {
-    display: none;
-    position: absolute;
-    top: 10px;
-    right: 50px;
-    color: var(--color-fg-on-emphasis);
-    background-color: var(--color-fg-muted);
-    border-radius: 3px;
-    padding: 5px 8px;
-    font-size: 12px;
-}
+
 </style>
 
 
@@ -108,38 +98,40 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 在<code class="notranslate">doGet()</code>或<code class="notranslate">doPost()</code>方法中，如果使用了ThreadLocal，但没有清理，那么它的状态很可能会影响到下次的某个请求，因为<code class="notranslate">Servlet</code>容器很可能用线程池实现线程复用。</p>
 <details>
 <summary>登录页面代码示例</summary>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/signin"</span>)
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">SignInServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
-    <span class="pl-c">// 模拟一个数据库:</span>
-    <span class="pl-k">private</span> <span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">String</span>&gt; <span class="pl-s1">users</span> = <span class="pl-smi">Map</span>.<span class="pl-en">of</span>(<span class="pl-s">"bob"</span>, <span class="pl-s">"bob123"</span>, <span class="pl-s">"alice"</span>, <span class="pl-s">"alice123"</span>, <span class="pl-s">"tom"</span>, <span class="pl-s">"tomcat"</span>);
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebServlet(urlPatterns = "/signin")
+public class SignInServlet extends HttpServlet {
+    // 模拟一个数据库:
+    private Map&lt;String, String&gt; users = Map.of("bob", "bob123", "alice", "alice123", "tom", "tomcat");
 
-    <span class="pl-c">// GET请求时显示登录页:</span>
-    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
-        <span class="pl-s1">resp</span>.<span class="pl-en">setContentType</span>(<span class="pl-s">"text/html"</span>);
-        <span class="pl-smi">PrintWriter</span> <span class="pl-s1">pw</span> = <span class="pl-s1">resp</span>.<span class="pl-en">getWriter</span>();
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;h1&gt;Sign In&lt;/h1&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;form action=<span class="pl-cce">\"</span>/signin<span class="pl-cce">\"</span> method=<span class="pl-cce">\"</span>post<span class="pl-cce">\"</span>&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;p&gt;Username: &lt;input name=<span class="pl-cce">\"</span>username<span class="pl-cce">\"</span>&gt;&lt;/p&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;p&gt;Password: &lt;input name=<span class="pl-cce">\"</span>password<span class="pl-cce">\"</span> type=<span class="pl-cce">\"</span>password<span class="pl-cce">\"</span>&gt;&lt;/p&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;p&gt;&lt;button type=<span class="pl-cce">\"</span>submit<span class="pl-cce">\"</span>&gt;Sign In&lt;/button&gt; &lt;a href=<span class="pl-cce">\"</span>/<span class="pl-cce">\"</span>&gt;Cancel&lt;/a&gt;&lt;/p&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">write</span>(<span class="pl-s">"&lt;/form&gt;"</span>);
-        <span class="pl-s1">pw</span>.<span class="pl-en">flush</span>();
+    // GET请求时显示登录页:
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        PrintWriter pw = resp.getWriter();
+        pw.write("&lt;h1&gt;Sign In&lt;/h1&gt;");
+        pw.write("&lt;form action=\"/signin\" method=\"post\"&gt;");
+        pw.write("&lt;p&gt;Username: &lt;input name=\"username\"&gt;&lt;/p&gt;");
+        pw.write("&lt;p&gt;Password: &lt;input name=\"password\" type=\"password\"&gt;&lt;/p&gt;");
+        pw.write("&lt;p&gt;&lt;button type=\"submit\"&gt;Sign In&lt;/button&gt; &lt;a href=\"/\"&gt;Cancel&lt;/a&gt;&lt;/p&gt;");
+        pw.write("&lt;/form&gt;");
+        pw.flush();
     }
 
-    <span class="pl-c">// POST请求时处理用户登录:</span>
-    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doPost</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
-        <span class="pl-smi">String</span> <span class="pl-s1">name</span> = <span class="pl-s1">req</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"username"</span>);
-        <span class="pl-smi">String</span> <span class="pl-s1">password</span> = <span class="pl-s1">req</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"password"</span>);
-        <span class="pl-smi">String</span> <span class="pl-s1">expectedPassword</span> = <span class="pl-s1">users</span>.<span class="pl-en">get</span>(<span class="pl-s1">name</span>.<span class="pl-en">toLowerCase</span>());
-        <span class="pl-k">if</span> (<span class="pl-s1">expectedPassword</span> != <span class="pl-c1">null</span> &amp;&amp; <span class="pl-s1">expectedPassword</span>.<span class="pl-en">equals</span>(<span class="pl-s1">password</span>)) {
-            <span class="pl-c">// 登录成功:</span>
-            <span class="pl-s1">req</span>.<span class="pl-en">getSession</span>().<span class="pl-en">setAttribute</span>(<span class="pl-s">"user"</span>, <span class="pl-s1">name</span>);
-            <span class="pl-s1">resp</span>.<span class="pl-en">sendRedirect</span>(<span class="pl-s">"/"</span>);
-        } <span class="pl-k">else</span> {
-            <span class="pl-s1">resp</span>.<span class="pl-en">sendError</span>(<span class="pl-smi">HttpServletResponse</span>.<span class="pl-c1">SC_FORBIDDEN</span>);
+    // POST请求时处理用户登录:
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("username");
+        String password = req.getParameter("password");
+        String expectedPassword = users.get(name.toLowerCase());
+        if (expectedPassword != null &amp;&amp; expectedPassword.equals(password)) {
+            // 登录成功:
+            req.getSession().setAttribute("user", name);
+            resp.sendRedirect("/");
+        } else {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }
-}</pre></div>
+}
+
+</code></pre>
 </details>
 <h3>Servlet容器</h3>
 <blockquote>
@@ -147,28 +139,33 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 Servlet容器只会给每个Servlet类创建唯一实例；<br>
 Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 </blockquote>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-s1">resources</span>.<span class="pl-en">addPreResources</span>(<span class="pl-k">new</span> <span class="pl-smi">DirResourceSet</span>(<span class="pl-s1">resources</span>, <span class="pl-s">"/WEB-INF/classes"</span>, <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s">"target/classes"</span>).<span class="pl-en">getAbsolutePath</span>(), <span class="pl-s">"/"</span>));</pre></div>
+<pre lang="Java" class="notranslate"><code class="notranslate">resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes", new File("target/classes").getAbsolutePath(), "/"));
+</code></pre>
 <p>这段代码表示Tomcat会去target/classes目录下去寻找需要加载的<code class="notranslate">Servlet</code>类文件</p>
 <h3>重定向和转发</h3>
 <p>重定向要求浏览器发送新的请求到新的路径，转发是通过转发请求到服务器内部<code class="notranslate">servlet</code>来处理请求。</p>
 <p>重定向</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/hi"</span>)
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">RedirectServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
-    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
-        <span class="pl-c">// 构造重定向的路径:</span>
-        <span class="pl-smi">String</span> <span class="pl-s1">name</span> = <span class="pl-s1">req</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"name"</span>);
-        <span class="pl-smi">String</span> <span class="pl-s1">redirectToUrl</span> = <span class="pl-s">"/hello"</span> + (<span class="pl-s1">name</span> == <span class="pl-c1">null</span> ? <span class="pl-s">""</span> : <span class="pl-s">"?name="</span> + <span class="pl-s1">name</span>);
-        <span class="pl-c">// 发送重定向响应:</span>
-        <span class="pl-s1">resp</span>.<span class="pl-en">sendRedirect</span>(<span class="pl-s1">redirectToUrl</span>);
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebServlet(urlPatterns = "/hi")
+public class RedirectServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 构造重定向的路径:
+        String name = req.getParameter("name");
+        String redirectToUrl = "/hello" + (name == null ? "" : "?name=" + name);
+        // 发送重定向响应:
+        resp.sendRedirect(redirectToUrl);
     }
-}</pre></div>
+}
+
+</code></pre>
 <p>转发</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/morning"</span>)
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">ForwardServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
-    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
-        <span class="pl-s1">req</span>.<span class="pl-en">getRequestDispatcher</span>(<span class="pl-s">"/hello"</span>).<span class="pl-en">forward</span>(<span class="pl-s1">req</span>, <span class="pl-s1">resp</span>);
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebServlet(urlPatterns = "/morning")
+public class ForwardServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/hello").forward(req, resp);
     }
-}</pre></div>
+}
+
+</code></pre>
 <h3>Cookie和Session</h3>
 <h4>Cookie</h4>
 <p>通过<code class="notranslate">HttpServletResponse</code>设置<code class="notranslate">cookie</code>以后，浏览器会在有效期内访问生效路径时带上<code class="notranslate">cookie</code>。<br>
@@ -176,26 +173,27 @@ Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1"><img width="620" height="124" alt="Image" src="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1" style="max-width: 100%; height: auto; max-height: 124px;"></a></p>
 <details>
 <summary>cookie设置</summary>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/pref"</span>)
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">LanguageServlet</span> <span class="pl-k">extends</span> <span class="pl-smi">HttpServlet</span> {
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebServlet(urlPatterns = "/pref")
+public class LanguageServlet extends HttpServlet {
 
-    <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">Set</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-c1">LANGUAGES</span> = <span class="pl-smi">Set</span>.<span class="pl-en">of</span>(<span class="pl-s">"en"</span>, <span class="pl-s">"zh"</span>);
+    private static final Set&lt;String&gt; LANGUAGES = Set.of("en", "zh");
 
-    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">doGet</span>(<span class="pl-smi">HttpServletRequest</span> <span class="pl-s1">req</span>, <span class="pl-smi">HttpServletResponse</span> <span class="pl-s1">resp</span>) <span class="pl-k">throws</span> <span class="pl-smi">ServletException</span>, <span class="pl-smi">IOException</span> {
-        <span class="pl-smi">String</span> <span class="pl-s1">lang</span> = <span class="pl-s1">req</span>.<span class="pl-en">getParameter</span>(<span class="pl-s">"lang"</span>);
-        <span class="pl-k">if</span> (<span class="pl-c1">LANGUAGES</span>.<span class="pl-en">contains</span>(<span class="pl-s1">lang</span>)) {
-            <span class="pl-c">// 创建一个新的Cookie:</span>
-            <span class="pl-smi">Cookie</span> <span class="pl-s1">cookie</span> = <span class="pl-k">new</span> <span class="pl-smi">Cookie</span>(<span class="pl-s">"lang"</span>, <span class="pl-s1">lang</span>);
-            <span class="pl-c">// 该Cookie生效的路径范围:</span>
-            <span class="pl-s1">cookie</span>.<span class="pl-en">setPath</span>(<span class="pl-s">"/"</span>);
-            <span class="pl-c">// 该Cookie有效期:</span>
-            <span class="pl-s1">cookie</span>.<span class="pl-en">setMaxAge</span>(<span class="pl-c1">8640000</span>); <span class="pl-c">// 8640000秒=100天</span>
-            <span class="pl-c">// 将该Cookie添加到响应:</span>
-            <span class="pl-s1">resp</span>.<span class="pl-en">addCookie</span>(<span class="pl-s1">cookie</span>);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String lang = req.getParameter("lang");
+        if (LANGUAGES.contains(lang)) {
+            // 创建一个新的Cookie:
+            Cookie cookie = new Cookie("lang", lang);
+            // 该Cookie生效的路径范围:
+            cookie.setPath("/");
+            // 该Cookie有效期:
+            cookie.setMaxAge(8640000); // 8640000秒=100天
+            // 将该Cookie添加到响应:
+            resp.addCookie(cookie);
         }
-        <span class="pl-s1">resp</span>.<span class="pl-en">sendRedirect</span>(<span class="pl-s">"/"</span>);
+        resp.sendRedirect("/");
     }
-}</pre></div>
+}
+</code></pre>
 </details>
 <p>可以通过<code class="notranslate">req.getCookies()</code>获取到请求的Cookie信息。</p>
 <h4>Session</h4>
@@ -206,98 +204,98 @@ Servelet容器在第一次调用<code class="notranslate">getSession()</code>时
 Servlet容器会自动创建<code class="notranslate">JSESSIONID</code>送给浏览器，浏览器请求时会带上<code class="notranslate">JSESSIONID</code>;</p>
 <details>
 <summary>req.getSession()源码（具体实现在request.class)</summary>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Request</span> <span class="pl-k">implements</span> <span class="pl-smi">HttpServletRequest</span> {
+<pre lang="Java" class="notranslate"><code class="notranslate">public class Request implements HttpServletRequest {
     ...
-    <span class="pl-k">public</span> <span class="pl-smi">HttpSession</span> <span class="pl-en">getSession</span>(<span class="pl-smi">boolean</span> <span class="pl-s1">create</span>) {
-        <span class="pl-smi">Session</span> <span class="pl-s1">session</span> = <span class="pl-smi">this</span>.<span class="pl-en">doGetSession</span>(<span class="pl-s1">create</span>);
-        <span class="pl-k">return</span> <span class="pl-s1">session</span> == <span class="pl-c1">null</span> ? <span class="pl-c1">null</span> : <span class="pl-s1">session</span>.<span class="pl-en">getSession</span>();
+    public HttpSession getSession(boolean create) {
+        Session session = this.doGetSession(create);
+        return session == null ? null : session.getSession();
     }
     ...
-    <span class="pl-k">protected</span> <span class="pl-smi">Session</span> <span class="pl-en">doGetSession</span>(<span class="pl-smi">boolean</span> <span class="pl-s1">create</span>) {
-        <span class="pl-smi">Context</span> <span class="pl-s1">context</span> = <span class="pl-smi">this</span>.<span class="pl-en">getContext</span>();
-        <span class="pl-k">if</span> (<span class="pl-s1">context</span> == <span class="pl-c1">null</span>) {
-            <span class="pl-k">return</span> <span class="pl-c1">null</span>;
-        } <span class="pl-k">else</span> {
-            <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> != <span class="pl-c1">null</span> &amp;&amp; !<span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">isValid</span>()) {
-                <span class="pl-smi">this</span>.<span class="pl-s1">session</span> = <span class="pl-c1">null</span>;
+    protected Session doGetSession(boolean create) {
+        Context context = this.getContext();
+        if (context == null) {
+            return null;
+        } else {
+            if (this.session != null &amp;&amp; !this.session.isValid()) {
+                this.session = null;
             }
 
-            <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> != <span class="pl-c1">null</span>) {
-                <span class="pl-k">return</span> <span class="pl-smi">this</span>.<span class="pl-s1">session</span>;
-            } <span class="pl-k">else</span> {
-                <span class="pl-smi">Manager</span> <span class="pl-s1">manager</span> = <span class="pl-s1">context</span>.<span class="pl-en">getManager</span>();
-                <span class="pl-k">if</span> (<span class="pl-s1">manager</span> == <span class="pl-c1">null</span>) {
-                    <span class="pl-k">return</span> <span class="pl-c1">null</span>;
-                } <span class="pl-k">else</span> {
-                    <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">requestedSessionId</span> != <span class="pl-c1">null</span>) {
-                        <span class="pl-k">try</span> {
-                            <span class="pl-smi">this</span>.<span class="pl-s1">session</span> = <span class="pl-s1">manager</span>.<span class="pl-en">findSession</span>(<span class="pl-smi">this</span>.<span class="pl-s1">requestedSessionId</span>);
-                        } <span class="pl-k">catch</span> (<span class="pl-smi">IOException</span> <span class="pl-s1">e</span>) {
-                            <span class="pl-k">if</span> (<span class="pl-s1">log</span>.<span class="pl-en">isDebugEnabled</span>()) {
-                                <span class="pl-s1">log</span>.<span class="pl-en">debug</span>(<span class="pl-s1">sm</span>.<span class="pl-en">getString</span>(<span class="pl-s">"request.session.failed"</span>, <span class="pl-k">new</span> <span class="pl-smi">Object</span>[]{<span class="pl-smi">this</span>.<span class="pl-s1">requestedSessionId</span>, <span class="pl-s1">e</span>.<span class="pl-en">getMessage</span>()}), <span class="pl-s1">e</span>);
-                            } <span class="pl-k">else</span> {
-                                <span class="pl-s1">log</span>.<span class="pl-en">info</span>(<span class="pl-s1">sm</span>.<span class="pl-en">getString</span>(<span class="pl-s">"request.session.failed"</span>, <span class="pl-k">new</span> <span class="pl-smi">Object</span>[]{<span class="pl-smi">this</span>.<span class="pl-s1">requestedSessionId</span>, <span class="pl-s1">e</span>.<span class="pl-en">getMessage</span>()}));
+            if (this.session != null) {
+                return this.session;
+            } else {
+                Manager manager = context.getManager();
+                if (manager == null) {
+                    return null;
+                } else {
+                    if (this.requestedSessionId != null) {
+                        try {
+                            this.session = manager.findSession(this.requestedSessionId);
+                        } catch (IOException e) {
+                            if (log.isDebugEnabled()) {
+                                log.debug(sm.getString("request.session.failed", new Object[]{this.requestedSessionId, e.getMessage()}), e);
+                            } else {
+                                log.info(sm.getString("request.session.failed", new Object[]{this.requestedSessionId, e.getMessage()}));
                             }
 
-                            <span class="pl-smi">this</span>.<span class="pl-s1">session</span> = <span class="pl-c1">null</span>;
+                            this.session = null;
                         }
 
-                        <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> != <span class="pl-c1">null</span> &amp;&amp; !<span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">isValid</span>()) {
-                            <span class="pl-smi">this</span>.<span class="pl-s1">session</span> = <span class="pl-c1">null</span>;
+                        if (this.session != null &amp;&amp; !this.session.isValid()) {
+                            this.session = null;
                         }
 
-                        <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> != <span class="pl-c1">null</span>) {
-                            <span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">access</span>();
-                            <span class="pl-k">return</span> <span class="pl-smi">this</span>.<span class="pl-s1">session</span>;
+                        if (this.session != null) {
+                            this.session.access();
+                            return this.session;
                         }
                     }
 
-                    <span class="pl-k">if</span> (!<span class="pl-s1">create</span>) {
-                        <span class="pl-k">return</span> <span class="pl-c1">null</span>;
-                    } <span class="pl-k">else</span> {
-                        <span class="pl-smi">boolean</span> <span class="pl-s1">trackModesIncludesCookie</span> = <span class="pl-s1">context</span>.<span class="pl-en">getServletContext</span>().<span class="pl-en">getEffectiveSessionTrackingModes</span>().<span class="pl-en">contains</span>(<span class="pl-smi">SessionTrackingMode</span>.<span class="pl-c1">COOKIE</span>);
-                        <span class="pl-k">if</span> (<span class="pl-s1">trackModesIncludesCookie</span> &amp;&amp; <span class="pl-smi">this</span>.<span class="pl-s1">response</span>.<span class="pl-en">getResponse</span>().<span class="pl-en">isCommitted</span>()) {
-                            <span class="pl-k">throw</span> <span class="pl-k">new</span> <span class="pl-smi">IllegalStateException</span>(<span class="pl-s1">sm</span>.<span class="pl-en">getString</span>(<span class="pl-s">"coyoteRequest.sessionCreateCommitted"</span>));
-                        } <span class="pl-k">else</span> {
-                            <span class="pl-smi">String</span> <span class="pl-s1">sessionId</span> = <span class="pl-smi">this</span>.<span class="pl-en">getRequestedSessionId</span>();
-                            <span class="pl-k">if</span> (!<span class="pl-smi">this</span>.<span class="pl-s1">requestedSessionSSL</span>) {
-                                <span class="pl-k">if</span> (<span class="pl-s">"/"</span>.<span class="pl-en">equals</span>(<span class="pl-s1">context</span>.<span class="pl-en">getSessionCookiePath</span>()) &amp;&amp; <span class="pl-smi">this</span>.<span class="pl-en">isRequestedSessionIdFromCookie</span>()) {
-                                    <span class="pl-k">if</span> (<span class="pl-s1">context</span>.<span class="pl-en">getValidateClientProvidedNewSessionId</span>()) {
-                                        <span class="pl-smi">boolean</span> <span class="pl-s1">found</span> = <span class="pl-c1">false</span>;
+                    if (!create) {
+                        return null;
+                    } else {
+                        boolean trackModesIncludesCookie = context.getServletContext().getEffectiveSessionTrackingModes().contains(SessionTrackingMode.COOKIE);
+                        if (trackModesIncludesCookie &amp;&amp; this.response.getResponse().isCommitted()) {
+                            throw new IllegalStateException(sm.getString("coyoteRequest.sessionCreateCommitted"));
+                        } else {
+                            String sessionId = this.getRequestedSessionId();
+                            if (!this.requestedSessionSSL) {
+                                if ("/".equals(context.getSessionCookiePath()) &amp;&amp; this.isRequestedSessionIdFromCookie()) {
+                                    if (context.getValidateClientProvidedNewSessionId()) {
+                                        boolean found = false;
 
-                                        <span class="pl-k">for</span>(<span class="pl-smi">Container</span> <span class="pl-s1">container</span> : <span class="pl-smi">this</span>.<span class="pl-en">getHost</span>().<span class="pl-en">findChildren</span>()) {
-                                            <span class="pl-smi">Manager</span> <span class="pl-s1">m</span> = ((<span class="pl-smi">Context</span>)<span class="pl-s1">container</span>).<span class="pl-en">getManager</span>();
-                                            <span class="pl-k">if</span> (<span class="pl-s1">m</span> != <span class="pl-c1">null</span>) {
-                                                <span class="pl-k">try</span> {
-                                                    <span class="pl-k">if</span> (<span class="pl-s1">m</span>.<span class="pl-en">findSession</span>(<span class="pl-s1">sessionId</span>) != <span class="pl-c1">null</span>) {
-                                                        <span class="pl-s1">found</span> = <span class="pl-c1">true</span>;
-                                                        <span class="pl-k">break</span>;
+                                        for(Container container : this.getHost().findChildren()) {
+                                            Manager m = ((Context)container).getManager();
+                                            if (m != null) {
+                                                try {
+                                                    if (m.findSession(sessionId) != null) {
+                                                        found = true;
+                                                        break;
                                                     }
-                                                } <span class="pl-k">catch</span> (<span class="pl-smi">IOException</span> <span class="pl-s1">var13</span>) {
+                                                } catch (IOException var13) {
                                                 }
                                             }
                                         }
 
-                                        <span class="pl-k">if</span> (!<span class="pl-s1">found</span>) {
-                                            <span class="pl-s1">sessionId</span> = <span class="pl-c1">null</span>;
+                                        if (!found) {
+                                            sessionId = null;
                                         }
                                     }
-                                } <span class="pl-k">else</span> {
-                                    <span class="pl-s1">sessionId</span> = <span class="pl-c1">null</span>;
+                                } else {
+                                    sessionId = null;
                                 }
                             }
 
-                            <span class="pl-smi">this</span>.<span class="pl-s1">session</span> = <span class="pl-s1">manager</span>.<span class="pl-en">createSession</span>(<span class="pl-s1">sessionId</span>);
-                            <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> != <span class="pl-c1">null</span> &amp;&amp; <span class="pl-s1">trackModesIncludesCookie</span>) {
-                                <span class="pl-smi">Cookie</span> <span class="pl-s1">cookie</span> = <span class="pl-smi">ApplicationSessionCookieConfig</span>.<span class="pl-en">createSessionCookie</span>(<span class="pl-s1">context</span>, <span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">getIdInternal</span>(), <span class="pl-smi">this</span>.<span class="pl-en">isSecure</span>());
-                                <span class="pl-smi">this</span>.<span class="pl-s1">response</span>.<span class="pl-en">addSessionCookieInternal</span>(<span class="pl-s1">cookie</span>);
+                            this.session = manager.createSession(sessionId);
+                            if (this.session != null &amp;&amp; trackModesIncludesCookie) {
+                                Cookie cookie = ApplicationSessionCookieConfig.createSessionCookie(context, this.session.getIdInternal(), this.isSecure());
+                                this.response.addSessionCookieInternal(cookie);
                             }
 
-                            <span class="pl-k">if</span> (<span class="pl-smi">this</span>.<span class="pl-s1">session</span> == <span class="pl-c1">null</span>) {
-                                <span class="pl-k">return</span> <span class="pl-c1">null</span>;
-                            } <span class="pl-k">else</span> {
-                                <span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">access</span>();
-                                <span class="pl-k">return</span> <span class="pl-smi">this</span>.<span class="pl-s1">session</span>;
+                            if (this.session == null) {
+                                return null;
+                            } else {
+                                this.session.access();
+                                return this.session;
                             }
                         }
                     }
@@ -306,15 +304,17 @@ Servlet容器会自动创建<code class="notranslate">JSESSIONID</code>送给浏
         }
     }
     ...
-}</pre></div>
+}
+</code></pre>
 </details>
 <p>通过源码可以发现：<br>
 <code class="notranslate">request</code>类的<code class="notranslate">doGetSession()</code>会首先试图访问缓存的<code class="notranslate">this.session</code>；<br>
 如果找不到则会通过<code class="notranslate">manager</code>寻找请求的<code class="notranslate">requestedSessionId</code>寻找对应的<code class="notranslate">Session</code>；<br>
 如果依旧找不到并且<code class="notranslate">create</code>参数为真，会根据请求的<code class="notranslate">sessionId</code>创建对应<code class="notranslate">Session</code>（请求的<code class="notranslate">sessionId</code>可能为空）；<br>
 创建完成<code class="notranslate">Session</code>以后会在返回时设置浏览器cookie的<code class="notranslate">SessionId</code>（对应代码如下）。</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">Cookie</span> <span class="pl-s1">cookie</span> = <span class="pl-smi">ApplicationSessionCookieConfig</span>.<span class="pl-en">createSessionCookie</span>(<span class="pl-s1">context</span>, <span class="pl-smi">this</span>.<span class="pl-s1">session</span>.<span class="pl-en">getIdInternal</span>(), <span class="pl-smi">this</span>.<span class="pl-en">isSecure</span>());
-<span class="pl-smi">this</span>.<span class="pl-s1">response</span>.<span class="pl-en">addSessionCookieInternal</span>(<span class="pl-s1">cookie</span>);</pre></div>
+<pre lang="Java" class="notranslate"><code class="notranslate">Cookie cookie = ApplicationSessionCookieConfig.createSessionCookie(context, this.session.getIdInternal(), this.isSecure());
+this.response.addSessionCookieInternal(cookie);
+</code></pre>
 <h3>JSP</h3>
 <p>JSP是Java Server Pages的缩写，它的文件必须放到/src/main/webapp下，文件名必须以.jsp结尾，整个文件与HTML并无太大区别，但需要插入变量，或者动态输出的地方，使用特殊指令&lt;% ... %&gt;。<br>
 JSP在执行前首先被Servlet容器编译成一个Servlet。</p>
@@ -363,26 +363,28 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
 <p>实现了业务逻辑和框架分离。</p>
 <h3>Filter</h3>
 <p>在请求到达Servlet之前，先通过Filter预处理或过滤。</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebFilter</span>(<span class="pl-s">"/*"</span>)<span class="pl-c">//需要该Filter过滤的url，此处表示所有url都需要过滤</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">LogFilter</span> <span class="pl-k">implements</span> <span class="pl-smi">Filter</span> {
-    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">doFilter</span>(<span class="pl-smi">ServletRequest</span> <span class="pl-s1">request</span>, <span class="pl-smi">ServletResponse</span> <span class="pl-s1">response</span>, <span class="pl-smi">FilterChain</span> <span class="pl-s1">chain</span>)
-            <span class="pl-k">throws</span> <span class="pl-smi">IOException</span>, <span class="pl-smi">ServletException</span> {
-        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"LogFilter: process "</span> + ((<span class="pl-smi">HttpServletRequest</span>) <span class="pl-s1">request</span>).<span class="pl-en">getRequestURI</span>());
-        <span class="pl-s1">chain</span>.<span class="pl-en">doFilter</span>(<span class="pl-s1">request</span>, <span class="pl-s1">response</span>);<span class="pl-c">//请求继续处理（通过过滤）</span>
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebFilter("/*")//需要该Filter过滤的url，此处表示所有url都需要过滤
+public class LogFilter implements Filter {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        System.out.println("LogFilter: process " + ((HttpServletRequest) request).getRequestURI());
+        chain.doFilter(request, response);//请求继续处理（通过过滤）
     }
-}</pre></div>
+}
+</code></pre>
 <h3>Listener</h3>
 <p>监听webApp的事件作出反应，如：</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebListener</span><span class="pl-c">//标注了@WebListener，且实现了特定接口的类会被Web服务器自动初始化</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppListener</span> <span class="pl-k">implements</span> <span class="pl-smi">ServletContextListener</span> {
-    <span class="pl-c">//监听`ServletContext`实例的创建和销毁</span>
-    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">contextInitialized</span>(<span class="pl-smi">ServletContextEvent</span> <span class="pl-s1">sce</span>) {<span class="pl-c">//在整个Web应用程序初始化完成后被调用</span>
-        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"WebApp initialized."</span>);
+<pre lang="Java" class="notranslate"><code class="notranslate">@WebListener//标注了@WebListener，且实现了特定接口的类会被Web服务器自动初始化
+public class AppListener implements ServletContextListener {
+    //监听`ServletContext`实例的创建和销毁
+    public void contextInitialized(ServletContextEvent sce) {//在整个Web应用程序初始化完成后被调用
+        System.out.println("WebApp initialized.");
     }
-    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">contextDestroyed</span>(<span class="pl-smi">ServletContextEvent</span> <span class="pl-s1">sce</span>) {<span class="pl-c">//在Web应用程序关闭后被调用</span>
-        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"WebApp destroyed."</span>);
+    public void contextDestroyed(ServletContextEvent sce) {//在Web应用程序关闭后被调用
+        System.out.println("WebApp destroyed.");
     }
-}</pre></div>
+}
+</code></pre>
 <p>一个Web服务器可以运行一个或多个WebApp，对于每个WebApp，Web服务器都会为其创建一个全局唯一的<code class="notranslate">ServletContext</code>实例。</p>
 <h2>Spring开发</h2>
 <p><a href="https://javaguide.cn/system-design/framework/spring/spring-common-annotations.html#spring-boot-%E5%9F%BA%E7%A1%80%E6%B3%A8%E8%A7%A3" rel="nofollow">Spring注解1_Spring&amp;SpringBoot常用注解总结</a><br>
@@ -391,12 +393,13 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
 <p>传统的程序开发模式实例化一个组件需要先实例化该组件所有的子组件，而子组件的实例化也需要先实例化其子组件，再加上部分组件实例化后应当被很多父组件共享，这会导致及其复杂的依赖关系，且组件之间紧密耦合不易维护。</p>
 <p>IoC(Inversion of Control)，所有组件不再由应用程序自己创建和配置，而是由IoC容器负责。</p>
 <h4>DI：依赖注入</h4>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">BookService</span> {
-    <span class="pl-k">private</span> <span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>;
-    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">setDataSource</span>(<span class="pl-smi">DataSource</span> <span class="pl-s1">dataSource</span>) {
-        <span class="pl-smi">this</span>.<span class="pl-s1">dataSource</span> = <span class="pl-s1">dataSource</span>;
-    }<span class="pl-c">//属性注入可以改为构造方法注入</span>
-}</pre></div>
+<pre lang="Java" class="notranslate"><code class="notranslate">public class BookService {
+    private DataSource dataSource;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }//属性注入可以改为构造方法注入
+}
+</code></pre>
 <blockquote>
 <p>BookService自己并不会创建DataSource，而是等待外部通过setDataSource()方法来注入一个DataSource。</p>
 </blockquote>
@@ -406,52 +409,57 @@ tip:可通过<code class="notranslate">{% extends "_base.html" %}</code>实现�
 <p>可以通过xml文件告诉容器各组件之间的依赖关系。<br>
 可以使用注解来告诉容器如何组装组件（类似xml）。<br>
 容器使用：</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">ApplicationContext</span> <span class="pl-s1">context</span> = <span class="pl-k">new</span> <span class="pl-smi">ClassPathXmlApplicationContext</span>(<span class="pl-s">"application.xml"</span>);<span class="pl-c">//IoC容器(从xml文件读取配置)</span>
-<span class="pl-c">// ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); //从annotation中读取配置</span>
-<span class="pl-smi">UserService</span> <span class="pl-s1">userService</span> = <span class="pl-s1">context</span>.<span class="pl-en">getBean</span>(<span class="pl-smi">UserService</span>.<span class="pl-k">class</span>);<span class="pl-c">//从IoC容器中获取相应类型的bean,IoC容器会自动装配组件</span></pre></div>
+<pre lang="Java" class="notranslate"><code class="notranslate">ApplicationContext context = new ClassPathXmlApplicationContext("application.xml");//IoC容器(从xml文件读取配置)
+// ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); //从annotation中读取配置
+UserService userService = context.getBean(UserService.class);//从IoC容器中获取相应类型的bean,IoC容器会自动装配组件
+</code></pre>
 <p>注解使用：</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Component</span> <span class="pl-c">//标注为需要IoC容器装配的Javabean</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">UserService</span> {
-    <span class="pl-c1">@</span><span class="pl-c1">Autowired</span><span class="pl-c">//表示该字段需要IoC容器注入</span>
-    <span class="pl-smi">MailService</span> <span class="pl-s1">mailService</span>;
+<pre lang="Java" class="notranslate"><code class="notranslate">@Component //标注为需要IoC容器装配的Javabean
+public class UserService {
+    @Autowired//表示该字段需要IoC容器注入
+    MailService mailService;
     ...
 }
 ...
-<span class="pl-c1">@</span><span class="pl-c1">Configuration</span><span class="pl-c">//配置类，表示在该类中可以生成多个@Bean方法交由IoC容器处理(同时也相当于声明了@Component)</span>
-<span class="pl-c1">@</span><span class="pl-c1">ComponentScan</span><span class="pl-c">//自动扫描带@Component的类并组装为Bean</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppConfig</span> {
-    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
-        <span class="pl-smi">ApplicationContext</span> <span class="pl-s1">context</span> = <span class="pl-k">new</span> <span class="pl-smi">AnnotationConfigApplicationContext</span>(<span class="pl-smi">AppConfig</span>.<span class="pl-k">class</span>);
-        <span class="pl-smi">UserService</span> <span class="pl-s1">userService</span> = <span class="pl-s1">context</span>.<span class="pl-en">getBean</span>(<span class="pl-smi">UserService</span>.<span class="pl-k">class</span>);
-        <span class="pl-smi">User</span> <span class="pl-s1">user</span> = <span class="pl-s1">userService</span>.<span class="pl-en">login</span>(<span class="pl-s">"bob@example.com"</span>, <span class="pl-s">"password"</span>);
-        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s1">user</span>.<span class="pl-en">getName</span>());
+@Configuration//配置类，表示在该类中可以生成多个@Bean方法交由IoC容器处理(同时也相当于声明了@Component)
+@ComponentScan//自动扫描带@Component的类并组装为Bean
+public class AppConfig {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserService userService = context.getBean(UserService.class);
+        User user = userService.login("bob@example.com", "password");
+        System.out.println(user.getName());
     }
-}</pre></div>
+}
+
+</code></pre>
 <blockquote>
 <p>tip:@<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/component/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/component">@component</a>和<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/bean/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/bean">@bean</a>的区别<br>
 <a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/component/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/component">@component</a>注解作用于类，而<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/bean/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/bean">@bean</a>注解作用于方法；两者都将之后的代码标记为需要IoC容器创建的bean对象。</p>
 </blockquote>
 <p>可以通过<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/propertysource/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/propertysource">@propertysource</a>注解加载自定义的配置文件，再通过<a class="user-mention notranslate" data-hovercard-type="organization" data-hovercard-url="/orgs/value/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/value">@value</a>注入，如</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">Configuration</span>
-<span class="pl-c1">@</span><span class="pl-c1">ComponentScan</span>
-<span class="pl-c1">@</span><span class="pl-c1">PropertySource</span>(<span class="pl-s">"app.properties"</span>) <span class="pl-c">// 表示读取classpath的app.properties</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">AppConfig</span> {
+<pre lang="Java" class="notranslate"><code class="notranslate">@Configuration
+@ComponentScan
+@PropertySource("app.properties") // 表示读取classpath的app.properties
+public class AppConfig {
     ...
 }
-<span class="pl-c1">@</span><span class="pl-c1">Component</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">SmtpConfig</span> { 
-    <span class="pl-c1">@</span><span class="pl-c1">Value</span>(<span class="pl-s">"${smtp.host:localhost}"</span>)<span class="pl-c">//以${key:defaultValue}的形式注入</span>
-    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">host</span>;
+@Component
+public class SmtpConfig { 
+    @Value("${smtp.host:localhost}")//以${key:defaultValue}的形式注入
+    private String host;
     ...
 }
 ...
-<span class="pl-c1">@</span><span class="pl-c1">Component</span>
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">MailService</span> {
-    <span class="pl-c">//#{}表示从JavaBean读取属性</span>
-    <span class="pl-c">//Class名为SmtpConfig的Bean，它在Spring容器中的默认名称就是smtpConfig</span>
-    <span class="pl-c1">@</span><span class="pl-c1">Value</span>(<span class="pl-s">"#{smtpConfig.host}"</span>)<span class="pl-c">//从名称为smtpConfig的Bean读取host属性</span>
-    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">smtpHost</span>;
-}</pre></div>
+@Component
+public class MailService {
+    //#{}表示从JavaBean读取属性
+    //Class名为SmtpConfig的Bean，它在Spring容器中的默认名称就是smtpConfig
+    @Value("#{smtpConfig.host}")//从名称为smtpConfig的Bean读取host属性
+    private String smtpHost;
+}
+
+</code></pre>
 <h3>AOP</h3>
 <p>Aspect Oriented Programming<br>
 ...</p>
@@ -465,19 +473,21 @@ rowMapper是一个lambda函数，负责将ResultSet的当前行<code class="notr
 args参数是sql语句的参数（填充问号）。<br>
 queryForObject返回一行记录对应的对象，query返回多行。<br>
 如果在设计表结构的时候，能够和JavaBean的属性一一对应，RowMapper可以直接使用BeanPropertyRowMapper，如<code class="notranslate">new BeanPropertyRowMapper&lt;&gt;(User.class)</code>。</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-smi">User</span> <span class="pl-en">getUserByEmail</span>(<span class="pl-smi">String</span> <span class="pl-s1">email</span>) {
-    <span class="pl-c">// 传入SQL，参数和RowMapper实例:</span>
-    <span class="pl-k">return</span> <span class="pl-s1">jdbcTemplate</span>.<span class="pl-en">queryForObject</span>(<span class="pl-s">"SELECT * FROM users WHERE email = ?"</span>,
-            (<span class="pl-smi">ResultSet</span> <span class="pl-s1">rs</span>, <span class="pl-smi">int</span> <span class="pl-s1">rowNum</span>) -&gt; {
-                <span class="pl-c">// 将ResultSet的当前行映射为一个JavaBean:</span>
-                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">User</span>( <span class="pl-c">// new User object:</span>
-                        <span class="pl-s1">rs</span>.<span class="pl-en">getLong</span>(<span class="pl-s">"id"</span>), <span class="pl-c">// id</span>
-                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"email"</span>), <span class="pl-c">// email</span>
-                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"password"</span>), <span class="pl-c">// password</span>
-                        <span class="pl-s1">rs</span>.<span class="pl-en">getString</span>(<span class="pl-s">"name"</span>)); <span class="pl-c">// name</span>
+<pre lang="Java" class="notranslate"><code class="notranslate">public User getUserByEmail(String email) {
+    // 传入SQL，参数和RowMapper实例:
+    return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?",
+            (ResultSet rs, int rowNum) -&gt; {
+                // 将ResultSet的当前行映射为一个JavaBean:
+                return new User( // new User object:
+                        rs.getLong("id"), // id
+                        rs.getString("email"), // email
+                        rs.getString("password"), // password
+                        rs.getString("name")); // name
             },
-            <span class="pl-s1">email</span>);
-}</pre></div>
+            email);
+}
+
+</code></pre>
 <h4>声明式事务</h4>
 <p>事务具有ACID特性。<br>
 <code class="notranslate">@Transactional</code>标注一个事务。<br>
@@ -505,19 +515,20 @@ DispatcherServlet接受所有web.xml中配置的路径（如/*）中的请求，
 可以使用代理模式创建名为<code class="notranslate">DelegatingFilterProxy</code>的Filter，这个Filter会自动去Spring容器中查找对应名字的bean；<br>
 这样我们就可以把Filter想实现的功能写在Spring容器的bean里面，在Servlet容器创建代理Filter调用Spring容器里bean的方法。<br>
 xml配置代理Filter的内容如下：</p>
-<div class="highlight highlight-text-xml"><pre class="notranslate">&lt;<span class="pl-ent">web-app</span>&gt;
-    &lt;<span class="pl-ent">filter</span>&gt;
-        &lt;<span class="pl-ent">filter-name</span>&gt;authFilter&lt;/<span class="pl-ent">filter-name</span>&gt; <span class="pl-c"><span class="pl-c">&lt;!--</span>会在Spring容器中查找同名的bean<span class="pl-c">--&gt;</span></span>
-        &lt;<span class="pl-ent">filter-class</span>&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;/<span class="pl-ent">filter-class</span>&gt;
-    &lt;/<span class="pl-ent">filter</span>&gt;
+<pre lang="xml" class="notranslate"><code class="notranslate">&lt;web-app&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;authFilter&lt;/filter-name&gt; &lt;!--会在Spring容器中查找同名的bean--&gt;
+        &lt;filter-class&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;/filter-class&gt;
+    &lt;/filter&gt;
 
-    &lt;<span class="pl-ent">filter-mapping</span>&gt;
-        &lt;<span class="pl-ent">filter-name</span>&gt;authFilter&lt;/<span class="pl-ent">filter-name</span>&gt;
-        &lt;<span class="pl-ent">url-pattern</span>&gt;/*&lt;/<span class="pl-ent">url-pattern</span>&gt;
-    &lt;/<span class="pl-ent">filter-mapping</span>&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;authFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
     ...
-&lt;/<span class="pl-ent">web-app</span>&gt;
-</pre></div>
+&lt;/web-app&gt;
+
+</code></pre>
 <h2>附录：JDBC</h2>
 <h3>简介</h3>
 <p><a target="_blank" rel="noopener noreferrer" href="image.png"><img src="image.png" alt="alt text" style="max-width: 100%;"></a><br>
@@ -528,27 +539,29 @@ JDBC是Java程序访问数据库的标准接口，接口的实现由具体的数
 <li>tip: <a href="https://juejin.cn/post/6844903446185951240" rel="nofollow">try_with_resoures使用</a><br>
 可以使用try(connection)建立连接，这样try语句块结束时connection会被自动正确关闭。</li>
 </ul>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">try</span> (<span class="pl-smi">Connection</span> <span class="pl-s1">conn</span> = <span class="pl-smi">DriverManager</span>.<span class="pl-en">getConnection</span>(<span class="pl-c1">JDBC_URL</span>, <span class="pl-c1">JDBC_USER</span>, <span class="pl-c1">JDBC_PASSWORD</span>)) {
-    <span class="pl-k">try</span> (<span class="pl-smi">PreparedStatement</span> <span class="pl-s1">ps</span> = <span class="pl-s1">conn</span>.<span class="pl-en">prepareStatement</span>(<span class="pl-s">"INSERT INTO students (id, grade, name, gender) VALUES (?,?,?,?)"</span>)) {
-        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">1</span>, <span class="pl-c1">999</span>); <span class="pl-c">// 注意：索引从1开始</span>
-        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">2</span>, <span class="pl-c1">1</span>); <span class="pl-c">// grade</span>
-        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">3</span>, <span class="pl-s">"Bob"</span>); <span class="pl-c">// name</span>
-        <span class="pl-s1">ps</span>.<span class="pl-en">setObject</span>(<span class="pl-c1">4</span>, <span class="pl-s">"M"</span>); <span class="pl-c">// gender</span>
-        <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-s1">ps</span>.<span class="pl-en">executeUpdate</span>(); <span class="pl-c">// 1</span>
+<pre lang="Java" class="notranslate"><code class="notranslate">try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO students (id, grade, name, gender) VALUES (?,?,?,?)")) {
+        ps.setObject(1, 999); // 注意：索引从1开始
+        ps.setObject(2, 1); // grade
+        ps.setObject(3, "Bob"); // name
+        ps.setObject(4, "M"); // gender
+        int n = ps.executeUpdate(); // 1
     }
-}</pre></div>
+}
+</code></pre>
 <p><code class="notranslate">javax.sql.DataSource</code>: 通过数据库连接池复用连接,类似线程池。</p>
-<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">HikariConfig</span> <span class="pl-s1">config</span> = <span class="pl-k">new</span> <span class="pl-smi">HikariConfig</span>();
-<span class="pl-s1">config</span>.<span class="pl-en">setJdbcUrl</span>(<span class="pl-s">"jdbc:mysql://localhost:3306/test"</span>);
-<span class="pl-s1">config</span>.<span class="pl-en">setUsername</span>(<span class="pl-s">"root"</span>);
-<span class="pl-s1">config</span>.<span class="pl-en">setPassword</span>(<span class="pl-s">"password"</span>);
-<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"connectionTimeout"</span>, <span class="pl-s">"1000"</span>); <span class="pl-c">// 连接超时：1秒</span>
-<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"idleTimeout"</span>, <span class="pl-s">"60000"</span>); <span class="pl-c">// 空闲超时：60秒</span>
-<span class="pl-s1">config</span>.<span class="pl-en">addDataSourceProperty</span>(<span class="pl-s">"maximumPoolSize"</span>, <span class="pl-s">"10"</span>); <span class="pl-c">// 最大连接数：10</span>
-<span class="pl-smi">DataSource</span> <span class="pl-s1">ds</span> = <span class="pl-k">new</span> <span class="pl-smi">HikariDataSource</span>(<span class="pl-s1">config</span>);
+<pre lang="Java" class="notranslate"><code class="notranslate">HikariConfig config = new HikariConfig();
+config.setJdbcUrl("jdbc:mysql://localhost:3306/test");
+config.setUsername("root");
+config.setPassword("password");
+config.addDataSourceProperty("connectionTimeout", "1000"); // 连接超时：1秒
+config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
+config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
+DataSource ds = new HikariDataSource(config);
 ...
-<span class="pl-k">try</span> (<span class="pl-smi">Connection</span> <span class="pl-s1">conn</span> = <span class="pl-s1">ds</span>.<span class="pl-en">getConnection</span>()) { <span class="pl-c">// 从连接池中获取连接</span>
-}</pre></div>
+try (Connection conn = ds.getConnection()) { // 从连接池中获取连接
+}
+</code></pre>
 <h2>参考资料</h2>
 <p><a href="https://liaoxuefeng.com/books/java/introduction/index.html" rel="nofollow">廖雪峰的Java教程</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;"></div>
@@ -575,7 +588,7 @@ if(""!=""){
 </script></div>
 </body>
 <script>
-var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
 var utterancesLoad=0;
 
 let themeSettings={
@@ -649,70 +662,7 @@ function iFrameLoading(){
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const createClipboardHTML = (codeContent, additionalClasses = '') => `
-        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
-        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
-            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
-                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
-                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
-            </clipboard-copy>
-            <div class="copy-feedback">Copied!</div>
-        </div>
-    `;
 
-    const handleCodeElements = (selector = '') => {
-        document.querySelectorAll(selector).forEach(codeElement => {
-            const codeContent = codeElement.innerHTML;
-            const newStructure = document.createElement('div');
-            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
-            newStructure.innerHTML = createClipboardHTML(codeContent);
-
-            const parentElement = codeElement.parentElement;
-            if (selector.includes('highlight')) {
-                parentElement.insertBefore(newStructure, codeElement.nextSibling);
-                parentElement.removeChild(codeElement);
-            } else {
-                parentElement.parentElement.replaceChild(newStructure, parentElement);
-            }
-        });
-    };
-
-    handleCodeElements('pre.notranslate > code.notranslate');
-    handleCodeElements('div.highlight > pre.notranslate');
-
-    let currentFeedback = null;
-    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
-        copyButton.addEventListener('click', () => {
-            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = codeContent;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-
-            const copyIcon = copyButton.querySelector('.octicon-copy');
-            const checkIcon = copyButton.querySelector('.octicon-check');
-            const copyFeedback = copyButton.nextElementSibling;
-
-            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
-            currentFeedback = copyFeedback;
-
-            copyIcon.classList.add('d-none');
-            checkIcon.classList.remove('d-none');
-            copyFeedback.style.display = 'block';
-            copyButton.style.borderColor = 'var(--color-success-fg)';
-
-            setTimeout(() => {
-                copyIcon.classList.remove('d-none');
-                checkIcon.classList.add('d-none');
-                copyFeedback.style.display = 'none';
-                copyButton.style.borderColor = '';
-            }, 2000);
-        });
-    });
-});
 
 </script>
 
