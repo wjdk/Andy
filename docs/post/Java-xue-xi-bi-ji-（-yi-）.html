@@ -33,7 +33,7 @@
 <meta property="og:url" content="https://wjdk.github.io/Andy/post/Java-xue-xi-bi-ji-%EF%BC%88-yi-%EF%BC%89.html">
 <meta property="og:image" content="https://raw.githubusercontent.com/wjdk/Andy/main/static/images/avater.jpg">
 <title>Java学习笔记（一）</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -111,8 +111,7 @@ javac -encoding UTF-8 com\itranswarp\learnjava\Main.java &amp;&amp; java com.itr
 <h3>在markdown中使用代码展开</h3>
 <details>
 <summary>代码展开</summary>
-<pre lang="Java" class="notranslate"><code class="notranslate">    这里填入代码
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate">    <span class="pl-s1">这里填入代码</span></pre></div>
 </details>
 <h2>语法</h2>
 <h3>基本语法</h3>
@@ -128,23 +127,21 @@ javac -encoding UTF-8 com\itranswarp\learnjava\Main.java &amp;&amp; java com.itr
 实际上会自动变成：<br>
 <code class="notranslate">StringBuilder sb = new StringBuilder();</code></p>
 <h4>输出</h4>
-<pre lang="java" class="notranslate"><code class="notranslate">double d = 3.1415926;
-System.out.printf("%.2f\n", d);
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">double</span> <span class="pl-s1">d</span> = <span class="pl-c1">3.1415926</span>;
+<span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">printf</span>(<span class="pl-s">"%.2f<span class="pl-cce">\n</span>"</span>, <span class="pl-s1">d</span>);</pre></div>
 <h4>输入</h4>
-<pre lang="java" class="notranslate"><code class="notranslate">import java.util.Scanner;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">util</span>.<span class="pl-s1">Scanner</span>;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in); // 创建Scanner对象
-        System.out.print("Input your name: "); // 打印提示
-        String name = scanner.nextLine(); // 读取一行输入并获取字符串
-        System.out.print("Input your age: "); // 打印提示
-        int age = scanner.nextInt(); // 读取一行输入并获取整数
-        System.out.printf("Hi, %s, you are %d\n", name, age); // 格式化输出
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Scanner</span> <span class="pl-s1">scanner</span> = <span class="pl-k">new</span> <span class="pl-smi">Scanner</span>(<span class="pl-smi">System</span>.<span class="pl-s1">in</span>); <span class="pl-c">// 创建Scanner对象</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">print</span>(<span class="pl-s">"Input your name: "</span>); <span class="pl-c">// 打印提示</span>
+        <span class="pl-smi">String</span> <span class="pl-s1">name</span> = <span class="pl-s1">scanner</span>.<span class="pl-en">nextLine</span>(); <span class="pl-c">// 读取一行输入并获取字符串</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">print</span>(<span class="pl-s">"Input your age: "</span>); <span class="pl-c">// 打印提示</span>
+        <span class="pl-smi">int</span> <span class="pl-s1">age</span> = <span class="pl-s1">scanner</span>.<span class="pl-en">nextInt</span>(); <span class="pl-c">// 读取一行输入并获取整数</span>
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">printf</span>(<span class="pl-s">"Hi, %s, you are %d<span class="pl-cce">\n</span>"</span>, <span class="pl-s1">name</span>, <span class="pl-s1">age</span>); <span class="pl-c">// 格式化输出</span>
     }
-}
-</code></pre>
+}</pre></div>
 <h4>类型</h4>
 <p>基本类型：byte，short，int，long，boolean，float，double，char；<br>
 引用类型：所有class和interface类型。<br>
@@ -156,16 +153,14 @@ public class Main {
 Java只允许一个class继承自一个类。<br>
 <code class="notranslate">super</code>关键字表示父类（超类）。子类引用父类的字段时，可以用<code class="notranslate">super.fieldName</code><br>
 子类构造函数调用父类的构造函数：</p>
-<pre lang="java" class="notranslate"><code class="notranslate">class Student extends Person {
-    protected int score;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Student</span> <span class="pl-k">extends</span> <span class="pl-smi">Person</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">int</span> <span class="pl-s1">score</span>;
 
-    public Student(String name, int age, int score) {
-        super(name, age); // 调用父类的构造方法Person(String, int)
-        this.score = score;
+    <span class="pl-k">public</span> <span class="pl-smi">Student</span>(<span class="pl-smi">String</span> <span class="pl-s1">name</span>, <span class="pl-smi">int</span> <span class="pl-s1">age</span>, <span class="pl-smi">int</span> <span class="pl-s1">score</span>) {
+        <span class="pl-en">super</span>(<span class="pl-s1">name</span>, <span class="pl-s1">age</span>); <span class="pl-c">// 调用父类的构造方法Person(String, int)</span>
+        <span class="pl-smi">this</span>.<span class="pl-s1">score</span> = <span class="pl-s1">score</span>;
     }
-}
-
-</code></pre>
+}</pre></div>
 <p>向上转型：把一个子类型安全地变为更加抽象的父类型：<br>
 <code class="notranslate">Person p = new Student();</code></p>
 <h4>override（C++的重载）</h4>
@@ -174,86 +169,79 @@ Java只允许一个class继承自一个类。<br>
 <h4>abstract</h4>
 <p>通过abstract定义的方法是抽象方法，它只有定义，没有实现。抽象方法定义了子类必须实现的接口规范；</p>
 <p>定义了抽象方法的class必须被定义为抽象类，从抽象类继承的子类必须实现抽象方法.</p>
-<pre lang="java" class="notranslate"><code class="notranslate">abstract class Person {
-    public abstract void run();
-}
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">abstract</span> <span class="pl-k">class</span> <span class="pl-smi">Person</span> {
+    <span class="pl-k">public</span> <span class="pl-k">abstract</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>();
+}</pre></div>
 <h4>interface（接口）</h4>
 <p>如果一个抽象类没有字段，所有方法全部都是抽象方法：<br>
 就可以把该抽象类改写为接口：<code class="notranslate">interface</code><br>
 Java的接口特指interface的定义，表示一个接口类型和一组方法签名，而编程接口泛指接口规范，如方法签名，数据格式，网络协议等。<br>
 一个类可以实现多个<code class="notranslate">interface</code></p>
-<pre lang="java" class="notranslate"><code class="notranslate">class Student implements Person, Hello { // 实现了两个interface
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Student</span> <span class="pl-k">implements</span> <span class="pl-smi">Person</span>, <span class="pl-smi">Hello</span> { <span class="pl-c">// 实现了两个interface</span>
     ...
-}
-</code></pre>
+}</pre></div>
 <h4>包作用域</h4>
 <p>package<br>
 包作用域是指一个类允许访问同一个package的没有public、private修饰的class，以及没有public、protected、private修饰的字段和方法。</p>
 <h4>final</h4>
 <p>用final修饰class可以阻止被继承：</p>
-<pre lang="java" class="notranslate"><code class="notranslate">package abc;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
 
-// 无法被继承:
-public final class Hello {
-    private int n = 0;
-    protected void hi(int t) {
-        long i = t;
+<span class="pl-c">// 无法被继承:</span>
+<span class="pl-k">public</span> <span class="pl-k">final</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-c1">0</span>;
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>(<span class="pl-smi">int</span> <span class="pl-s1">t</span>) {
+        <span class="pl-smi">long</span> <span class="pl-s1">i</span> = <span class="pl-s1">t</span>;
     }
-}
-</code></pre>
+}</pre></div>
 <p>用final修饰method可以阻止被子类覆写：</p>
-<pre lang="java" class="notranslate"><code class="notranslate">package abc;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
 
-public class Hello {
-    // 无法被覆写:
-    protected final void hi() {
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-c">// 无法被覆写:</span>
+    <span class="pl-k">protected</span> <span class="pl-k">final</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>() {
     }
-}
-</code></pre>
+}</pre></div>
 <p>用final修饰field可以阻止被重新赋值：</p>
-<pre lang="java" class="notranslate"><code class="notranslate">package abc;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
 
-public class Hello {
-    private final int n = 0;
-    protected void hi() {
-        this.n = 1; // error!
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">int</span> <span class="pl-s1">n</span> = <span class="pl-c1">0</span>;
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>() {
+        <span class="pl-smi">this</span>.<span class="pl-s1">n</span> = <span class="pl-c1">1</span>; <span class="pl-c">// error!</span>
     }
-}
-</code></pre>
+}</pre></div>
 <p>用final修饰局部变量可以阻止被重新赋值：</p>
-<pre lang="java" class="notranslate"><code class="notranslate">package abc;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">package</span> <span class="pl-s1">abc</span>;
 
-public class Hello {
-    protected void hi(final int t) {
-        t = 1; // error!
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-k">protected</span> <span class="pl-smi">void</span> <span class="pl-en">hi</span>(<span class="pl-k">final</span> <span class="pl-smi">int</span> <span class="pl-s1">t</span>) {
+        <span class="pl-s1">t</span> = <span class="pl-c1">1</span>; <span class="pl-c">// error!</span>
     }
-}
-</code></pre>
+}</pre></div>
 <h4>内部类inner Class</h4>
-<pre lang="java" class="notranslate"><code class="notranslate">// inner class
-public class Main {
-    public static void main(String[] args) {
-        Outer outer = new Outer("Nested"); // 实例化一个Outer
-        Outer.Inner inner = outer.new Inner(); // 实例化一个Inner
-        inner.hello();
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c">// inner class</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Outer</span> <span class="pl-s1">outer</span> = <span class="pl-k">new</span> <span class="pl-smi">Outer</span>(<span class="pl-s">"Nested"</span>); <span class="pl-c">// 实例化一个Outer</span>
+        <span class="pl-smi">Outer</span>.<span class="pl-smi">Inner</span> <span class="pl-s1">inner</span> = <span class="pl-s1">outer</span>.<span class="pl-k">new</span> <span class="pl-smi">Inner</span>(); <span class="pl-c">// 实例化一个Inner</span>
+        <span class="pl-s1">inner</span>.<span class="pl-en">hello</span>();
     }
 }
 
-class Outer {
-    private String name;
+<span class="pl-k">class</span> <span class="pl-smi">Outer</span> {
+    <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-s1">name</span>;
 
-    Outer(String name) {
-        this.name = name;
+    <span class="pl-smi">Outer</span>(<span class="pl-smi">String</span> <span class="pl-s1">name</span>) {
+        <span class="pl-smi">this</span>.<span class="pl-s1">name</span> = <span class="pl-s1">name</span>;
     }
 
-    class Inner {
-        void hello() {
-            System.out.println("Hello, " + Outer.this.name);
+    <span class="pl-k">class</span> <span class="pl-smi">Inner</span> {
+        <span class="pl-smi">void</span> <span class="pl-en">hello</span>() {
+            <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Hello, "</span> + <span class="pl-smi">Outer</span>.<span class="pl-smi">this</span>.<span class="pl-s1">name</span>);
         }
     }
-}
-</code></pre>
+}</pre></div>
 <p>Inner Class除了有一个this指向它自己，还隐含地持有一个Outer Class实例，可以用Outer.this访问这个实例。所以，实例化一个Inner Class不能脱离Outer实例。</p>
 <h4>Java的编译运行过程(简单）：</h4>
 <p>class,classpath,模块等见<a href="https://liaoxuefeng.com/books/java/oop/basic/classpath-jar/index.html" rel="nofollow">参考资料3.12-3.14</a></p>
@@ -300,89 +288,85 @@ class Outer {
 在调用<code class="notranslate">start()</code>方法前，调用<code class="notranslate">setDaemon(true)</code>把该线程标记为守护线程。<br>
 守护线程不能持有需要关闭的资源（如打开文件等）。</p>
 <h4>线程同步</h4>
-<pre lang="java" class="notranslate"><code class="notranslate">public synchronized void add(int n) { // 锁住this
-    count += n;
-} // 解锁
-
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">synchronized</span> <span class="pl-smi">void</span> <span class="pl-en">add</span>(<span class="pl-smi">int</span> <span class="pl-s1">n</span>) { <span class="pl-c">// 锁住this</span>
+    <span class="pl-s1">count</span> += <span class="pl-s1">n</span>;
+} <span class="pl-c">// 解锁</span></pre></div>
 <p>等价于</p>
-<pre lang="java" class="notranslate"><code class="notranslate">public void add(int n) {
-    synchronized(this) { // 锁住this
-        count += n;
-    } // 解锁
-}
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">add</span>(<span class="pl-smi">int</span> <span class="pl-s1">n</span>) {
+    <span class="pl-k">synchronized</span>(<span class="pl-smi">this</span>) { <span class="pl-c">// 锁住this</span>
+        <span class="pl-s1">count</span> += <span class="pl-s1">n</span>;
+    } <span class="pl-c">// 解锁</span>
+}</pre></div>
 <p><code class="notranslate">synchronized(this)</code>锁住的是对象，同一个对象里只有一个线程能执行<code class="notranslate">synchronized</code>修饰的代码段，其他线程可以执行非<code class="notranslate">synchronized</code>修饰的代码段。</p>
 <details>
 <summary>代码展开</summary>
-<pre lang="java" class="notranslate"><code class="notranslate">public class Main{
-    public static void main(String[] args) {
-        System.out.println("使用关键字synchronized");
-        Mthreads mt=new Mthreads();
-        Thread thread1 = new Thread(mt, "mt1");
-        Thread thread2 = new Thread(mt, "mt2");
-        Thread thread3 = new Thread(mt, "mt3");
-        thread1.start();
-        thread2.start();
-        thread3.start();
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span>{
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"使用关键字synchronized"</span>);
+        <span class="pl-smi">Mthreads</span> <span class="pl-s1">mt</span>=<span class="pl-k">new</span> <span class="pl-smi">Mthreads</span>();
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread1</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt1"</span>);
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread2</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt2"</span>);
+        <span class="pl-smi">Thread</span> <span class="pl-s1">thread3</span> = <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-s1">mt</span>, <span class="pl-s">"mt3"</span>);
+        <span class="pl-s1">thread1</span>.<span class="pl-en">start</span>();
+        <span class="pl-s1">thread2</span>.<span class="pl-en">start</span>();
+        <span class="pl-s1">thread3</span>.<span class="pl-en">start</span>();
     }
 }
-class Mthreads implements Runnable{
-    private int count;
+<span class="pl-k">class</span> <span class="pl-smi">Mthreads</span> <span class="pl-k">implements</span> <span class="pl-smi">Runnable</span>{
+    <span class="pl-k">private</span> <span class="pl-smi">int</span> <span class="pl-s1">count</span>;
 
-    public Mthreads() {
-        count = 0;
+    <span class="pl-k">public</span> <span class="pl-smi">Mthreads</span>() {
+        <span class="pl-s1">count</span> = <span class="pl-c1">0</span>;
     }
 
-    public void countAdd() {
-        synchronized(this) {
-            for (int i = 0; i &lt; 5; i ++) {
-                try {
-                    System.out.println(Thread.currentThread().getName() + ":" + (count++));
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">countAdd</span>() {
+        <span class="pl-k">synchronized</span>(<span class="pl-smi">this</span>) {
+            <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+                <span class="pl-k">try</span> {
+                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">":"</span> + (<span class="pl-s1">count</span>++));
+                    <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+                } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                    <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
                 }
             }
         }
     }
 
-    //非synchronized代码块，未对count进行读写操作，所以可以不用synchronized
-    public void printCount() {
-        for (int i = 0; i &lt; 5; i ++) {
-            try {
-                System.out.println(Thread.currentThread().getName() + " count:" + count);
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    <span class="pl-c">//非synchronized代码块，未对count进行读写操作，所以可以不用synchronized</span>
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">printCount</span>() {
+        <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+            <span class="pl-k">try</span> {
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">" count:"</span> + <span class="pl-s1">count</span>);
+                <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+            } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
             }
         }
     }
 
-    public synchronized void printCount2() {
-        for (int i = 0; i &lt; 5; i ++) {
-            try {
-                System.out.println(Thread.currentThread().getName() + " count:" + count);
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    <span class="pl-k">public</span> <span class="pl-k">synchronized</span> <span class="pl-smi">void</span> <span class="pl-en">printCount2</span>() {
+        <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span> = <span class="pl-c1">0</span>; <span class="pl-s1">i</span> &lt; <span class="pl-c1">5</span>; <span class="pl-s1">i</span> ++) {
+            <span class="pl-k">try</span> {
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>() + <span class="pl-s">" count:"</span> + <span class="pl-s1">count</span>);
+                <span class="pl-smi">Thread</span>.<span class="pl-en">sleep</span>(<span class="pl-c1">100</span>);
+            } <span class="pl-k">catch</span> (<span class="pl-smi">InterruptedException</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
             }
         }
     }
 
-    public void run() {
-        String threadName = Thread.currentThread().getName();
-        if (threadName.equals("mt1")) {
-            countAdd();
-        } else if (threadName.equals("mt2")) {
-            printCount();
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>() {
+        <span class="pl-smi">String</span> <span class="pl-s1">threadName</span> = <span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>();
+        <span class="pl-k">if</span> (<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt1"</span>)) {
+            <span class="pl-en">countAdd</span>();
+        } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt2"</span>)) {
+            <span class="pl-en">printCount</span>();
         }    
-        else if(threadName.equals("mt3")){
-            printCount2();
+        <span class="pl-k">else</span> <span class="pl-k">if</span>(<span class="pl-s1">threadName</span>.<span class="pl-en">equals</span>(<span class="pl-s">"mt3"</span>)){
+            <span class="pl-en">printCount2</span>();
         }
     }
-}
-</code></pre>
+}</pre></div>
 </details>
 <p>这种情况下，mt1和mt3不能同时运行,mt2可以和mt1/mt3同时运行。</p>
 <p>我的理解：<code class="notranslate">synchronized(object)</code>修饰代码段相当于让代码段运行前得到<code class="notranslate">object</code>对应的锁，运行后释放锁。</p>
@@ -397,15 +381,14 @@ class Mthreads implements Runnable{
 <code class="notranslate">semaphore.acquire();</code>获取，<code class="notranslate">semaphore.release();</code>释放。</p>
 <h4>线程池</h4>
 <p><code class="notranslate">ExecutorService</code>接口表示线程池</p>
-<pre lang="Java" class="notranslate"><code class="notranslate">// 创建固定大小的线程池:
-ExecutorService executor = Executors.newFixedThreadPool(3);
-// 提交任务:
-executor.submit(task1);
-executor.submit(task2);
-executor.submit(task3);
-executor.submit(task4);
-executor.submit(task5);
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c">// 创建固定大小的线程池:</span>
+<span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">3</span>);
+<span class="pl-c">// 提交任务:</span>
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task1</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task2</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task3</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task4</span>);
+<span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task5</span>);</pre></div>
 <p>FixedThreadPool：线程数固定的线程池；<br>
 CachedThreadPool：线程数根据任务动态调整的线程池；<br>
 SingleThreadExecutor：仅单线程执行的线程池。<br>
@@ -414,35 +397,32 @@ SingleThreadExecutor：仅单线程执行的线程池。<br>
 <h4>Future</h4>
 <p><code class="notranslate">Callable</code>接口，和<code class="notranslate">Runnable</code>接口比，它多了一个返回值。</p>
 <p>可以用<code class="notranslate">Future</code>获取<code class="notranslate">Callable</code>任务异步执行的结果，获取会在执行完成前阻塞。</p>
-<pre lang="java" class="notranslate"><code class="notranslate">ExecutorService executor = Executors.newFixedThreadPool(4); 
-// 定义任务:
-Callable&lt;String&gt; task = new Task();
-// 提交任务并获得Future:
-Future&lt;String&gt; future = executor.submit(task);
-// 从Future获取异步执行返回的结果:
-String result = future.get(); // 可能阻塞
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">ExecutorService</span> <span class="pl-s1">executor</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">4</span>); 
+<span class="pl-c">// 定义任务:</span>
+<span class="pl-smi">Callable</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">task</span> = <span class="pl-k">new</span> <span class="pl-smi">Task</span>();
+<span class="pl-c">// 提交任务并获得Future:</span>
+<span class="pl-smi">Future</span>&lt;<span class="pl-smi">String</span>&gt; <span class="pl-s1">future</span> = <span class="pl-s1">executor</span>.<span class="pl-en">submit</span>(<span class="pl-s1">task</span>);
+<span class="pl-c">// 从Future获取异步执行返回的结果:</span>
+<span class="pl-smi">String</span> <span class="pl-s1">result</span> = <span class="pl-s1">future</span>.<span class="pl-en">get</span>(); <span class="pl-c">// 可能阻塞</span></pre></div>
 <p>使用<code class="notranslate">CompletableFuture</code>可以实现回调、线程的串行化、并行化。</p>
 <h4>ThreadLocal</h4>
 <p>使用ThreadLocal来设置单个线程独有的上下文（“局部变量”）。</p>
 <p>ThreadLocal实例通常总是以静态字段初始化如下：</p>
-<pre lang="Java" class="notranslate"><code class="notranslate">static ThreadLocal&lt;User&gt; threadLocalUser = new ThreadLocal&lt;&gt;();
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">static</span> <span class="pl-smi">ThreadLocal</span>&lt;<span class="pl-smi">User</span>&gt; <span class="pl-s1">threadLocalUser</span> = <span class="pl-k">new</span> <span class="pl-smi">ThreadLocal</span>&lt;&gt;();</pre></div>
 <p>典型使用如下:</p>
-<pre lang="Java" class="notranslate"><code class="notranslate">void processUser(user) {
-    try {
-        threadLocalUser.set(user);
-        step1();
-        step2();
-        log();
-    } finally {
-        threadLocalUser.remove();
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">void</span> <span class="pl-en">processUser</span>(<span class="pl-smi">user</span>) {
+    <span class="pl-k">try</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">set</span>(<span class="pl-s1">user</span>);
+        <span class="pl-en">step1</span>();
+        <span class="pl-en">step2</span>();
+        <span class="pl-en">log</span>();
+    } <span class="pl-k">finally</span> {
+        <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">remove</span>();
     }
 }
 ...
-        User u = threadLocalUser.get();
-...
-</code></pre>
+        <span class="pl-smi">User</span> <span class="pl-s1">u</span> = <span class="pl-s1">threadLocalUser</span>.<span class="pl-en">get</span>();
+...</pre></div>
 <p><code class="notranslate">ThreadLocal</code>本身不会存储任何数据，<code class="notranslate">ThreadLocal</code>的<code class="notranslate">set</code>方法是将值存储到<code class="notranslate">Thread</code>线程本身的<code class="notranslate">ThreadLocalMap</code>里面了。<br>
 真正的项目开发往往会使用线程池，因此线程执行结束时需要清除上下文信息，需要调用<code class="notranslate">ThreadLocoal</code>的<code class="notranslate">remove</code>方法。</p>
 <p><a href="https://github.com/wupeixuan/JDKSourceCode1.8/blob/master/src/java/lang/ThreadLocal.java">threadlocal源码解读</a></p>
