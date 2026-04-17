@@ -173,7 +173,7 @@ Servlet容器会使用多线程执行doGet()或doPost()方法。</p>
 <h4>Cookie</h4>
 <p>通过<code class="notranslate">HttpServletResponse</code>设置<code class="notranslate">cookie</code>以后，浏览器会在有效期内访问生效路径时带上<code class="notranslate">cookie</code>。<br>
 浏览器请求的RequestHeaders的Cookie部分如下：<br>
-<a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1"><img width="620" height="124" alt="Image" src="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1" style="max-width: 100%; height: auto; max-height: 124px;"></a></p>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1"><img width="620" height="124" alt="Image" src="https://github.com/user-attachments/assets/90beceb8-aec4-4a40-ac19-2ec77b4c28e1" style="max-width: 100%; height: auto; max-height: 124px;; aspect-ratio: 620 / 124; background-color: var(--bgColor-muted); border-radius: 6px; display: block" class="js-gh-image-fallback"></a></p>
 <details>
 <summary>cookie设置</summary>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-c1">@</span><span class="pl-c1">WebServlet</span>(<span class="pl-s1">urlPatterns</span> = <span class="pl-s">"/pref"</span>)
@@ -323,13 +323,13 @@ out：表示HttpServletResponse的PrintWriter；<br>
 session：表示当前HttpSession对象；<br>
 request：表示HttpServletRequest对象。</p>
 <h3>简易MVC例子</h3>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605"><img width="471" height="243" alt="Image" src="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605" style="max-width: 100%; height: auto; max-height: 243px;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605"><img width="471" height="243" alt="Image" src="https://github.com/user-attachments/assets/ac3fc8f8-e5ad-477d-91e7-0bbbcc77d605" style="max-width: 100%; height: auto; max-height: 243px;; aspect-ratio: 471 / 243; background-color: var(--bgColor-muted); border-radius: 6px; display: block" class="js-gh-image-fallback"></a></p>
 <p>Controller(UserServlet)根据请求内容从数据库中获取Model(user：一个Javabean或map)并把Model转发给View(user.jsp)渲染，View返回响应内容给Browser。</p>
 <h3>MVC框架</h3>
 <p>我们希望业务逻辑(Controller)和Servlet接口分离，由Java类实现；<br>
 JSP更换为其他更好用的模版引擎。</p>
 <p>新框架如下：</p>
-<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f"><img width="417" height="305" alt="Image" src="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f" style="max-width: 100%; height: auto; max-height: 305px;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f"><img width="417" height="305" alt="Image" src="https://github.com/user-attachments/assets/dabf4e7f-d56f-4be1-a616-8b5f5d8d403f" style="max-width: 100%; height: auto; max-height: 305px;; aspect-ratio: 417 / 305; background-color: var(--bgColor-muted); border-radius: 6px; display: block" class="js-gh-image-fallback"></a></p>
 <h4>项目的具体实现：</h4>
 <p>在这个项目中Servelet只有<code class="notranslate">DispatcherServlet</code>一个(<code class="notranslate">@WebServlet(urlPatterns = "/")</code>)，也就是说所有请求都会匹配到这里。</p>
 <blockquote>
